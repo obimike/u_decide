@@ -1,4 +1,4 @@
-import { Center, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 export function SiteBodyMaxWidth({ children }) {
   console.log(children);
