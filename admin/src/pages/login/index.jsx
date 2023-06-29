@@ -24,6 +24,7 @@ function Login() {
       setErrorMsg("All fields are required!");
     } else {
       //  authUser();
+      navigate("/dashboard");
     }
   };
 
