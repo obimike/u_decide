@@ -4,11 +4,19 @@ import { colors } from "../../../utils/colors";
 
 import IMG from "../../../images/ballot.png";
 import CandidateCard from "../../../components/candidate_card";
+import { statesOption } from "../utils/state";
+import { toggleLGA } from "../utils/lga";
 
 function Candidate() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [state, setState] = useState("");
+  const [lgaList, setLgaList] = useState([]);
+
+  const [lga, setLga] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+
+  console.log(state);
 
   const addCandidate = (event) => {
     event.preventDefault();
@@ -24,6 +32,11 @@ function Candidate() {
       //  authUser();
       //  navigate("/dashboard");
     }
+  };
+
+  const populateLGA = (state) => {
+    const lga = toggleLGA(state);
+    setLgaList(lga);
   };
 
   return (
@@ -156,21 +169,32 @@ function Candidate() {
               <Text fontSize="16px" mt={2}>
                 State
               </Text>
-              <Input
-                placeholder="Enter Image Link"
-                value={email}
+              <Select
+                placeholder="Select State"
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
-              />
+                value={state}
+                onChange={(event) => {
+                  populateLGA(event.target.value);
+                  setState(event.target.value);
+                }}
+              >
+                {statesOption.map((item, i) => item)}
+              </Select>
               <Text fontSize="16px" mt={2}>
                 LGA
               </Text>
-              <Input
-                placeholder="Enter Image Link"
-                value={email}
+              <Select
+                placeholder="Select LGA"
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
-              />
+                value={lga}
+                onChange={(event) => setLga(event.target.value)}
+              >
+                {lgaList.map((item, i) => (
+                  <option value={item} key={i}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
             </Box>
           </Box>
         </Box>
