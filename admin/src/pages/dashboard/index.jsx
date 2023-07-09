@@ -20,7 +20,7 @@ import Candidate from "./panels/candidate";
 
 function Dashboard() {
   return (
-    <Box h="100vh">
+    <Box>
       <Box
         display="flex"
         h="75px"

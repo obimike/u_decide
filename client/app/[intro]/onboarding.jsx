@@ -1,10 +1,13 @@
 import { Box, Text, Button, Center, Image, Flex } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { Link } from "expo-router";
 
 import PagerView from "react-native-pager-view";
 
 import Intro1 from "../../assets/images/intro_1.png";
+import Intro2 from "../../assets/images/intro_2.png";
+import Intro3 from "../../assets/images/intro_3.png";
 import color from "../../utils/color";
 
 const OnBoardingPage = () => {
@@ -55,7 +58,7 @@ const OnBoardingPage = () => {
           </Flex>
         </Box>
         <Box style={styles.page} key="2">
-          <Image width="5/6" height={368} source={Intro1} alt="Intro Image 1" />
+          <Image width="5/6" height={368} source={Intro2} alt="Intro Image 2" />
           <Center paddingX={8}>
             <Text
               marginTop={8}
@@ -98,7 +101,7 @@ const OnBoardingPage = () => {
           </Flex>
         </Box>
         <Box style={styles.page} key="3">
-          <Image width="5/6" height={368} source={Intro1} alt="Intro Image 1" />
+          <Image width="5/6" height={368} source={Intro3} alt="Intro Image 3" />
           <Center paddingX={8}>
             <Text
               marginTop={8}
@@ -143,27 +146,30 @@ const OnBoardingPage = () => {
       </PagerView>
 
       <Center>
-        <Button
-          marginTop={4}
-          backgroundColor={color.primary}
-          size="lg"
-          width="90%"
-          textAlign="center"
-          _text={{ fontFamily: "Poppins-Regular" }}
-        >
-          Create on account
-        </Button>
-
-        <Button
-          marginTop={4}
-          width="90%"
-          size="lg"
-          variant="outline"
-          borderColor={color.primary}
-          _text={{ color: color.primary, fontFamily: "Poppins-Regular" }}
-        >
-          Log In
-        </Button>
+        <Link href="/auth/verify_nin" asChild replace>
+          <Button
+            marginTop={4}
+            backgroundColor={color.primary}
+            size="lg"
+            width="90%"
+            textAlign="center"
+            _text={{ fontFamily: "Poppins-Regular" }}
+          >
+            Create on account
+          </Button>
+        </Link>
+        <Link href="/auth" asChild replace>
+          <Button
+            marginTop={4}
+            width="90%"
+            size="lg"
+            variant="outline"
+            borderColor={color.primary}
+            _text={{ color: color.primary, fontFamily: "Poppins-Regular" }}
+          >
+            Log In
+          </Button>
+        </Link>
       </Center>
     </Box>
   );
