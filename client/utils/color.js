@@ -1,5 +1,5 @@
 const textColor = "#333";
-const secondaryTextColor = "#333";
+const secondaryTextColor = "#828282";
 const primary = "#2C7337";
 const error = "#ff0000b3";
 const white = "#ffffff";

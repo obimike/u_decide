@@ -68,6 +68,27 @@ export default function AppLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="components/candidateCards"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="components/categoryCard"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/terms"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </NativeBaseProvider>
   );

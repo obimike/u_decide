@@ -8,16 +8,18 @@ import {
   Icon,
   Image,
   ScrollView,
+  VStack,
 } from "native-base";
 import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import color from "../../utils/color";
 import { useRouter, Tabs } from "expo-router";
 import NewsCard from "./components/newsCard";
+import CandidateCards from "./components/candidateCards";
 
 const Home = () => {
   return (
-    <Box>
+    <Box h="100%">
       <Box backgroundColor={color.white}>
         <Text
           color={color.textColor}
@@ -34,8 +36,10 @@ const Home = () => {
           News & Updates
         </Text>
         <Box my={4}>
-          <ScrollView scrollEnabled>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <HStack space={4}>
+              <NewsCard />
+              <NewsCard />
               <NewsCard />
               <NewsCard />
             </HStack>
@@ -44,6 +48,14 @@ const Home = () => {
         <Text fontFamily="Poppins-Regular" color={color.primary} fontSize={18}>
           Candidates
         </Text>
+        <ScrollView showsVerticalScrollIndicator={false} h="48%">
+          <VStack space={2} my={4}>
+            <CandidateCards />
+            <CandidateCards />
+            <CandidateCards />
+            <CandidateCards />
+          </VStack>
+        </ScrollView>
       </Box>
     </Box>
   );
