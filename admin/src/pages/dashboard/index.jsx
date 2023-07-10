@@ -7,18 +7,44 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Center,
+  Avatar,
+  PopoverArrow,
+  useDisclosure,
+  PopoverBody,
+  Button,
+  VStack,
 } from "@chakra-ui/react";
 import { colors } from "../../utils/colors";
 
-import IconHolder from "../../components/iconHolder";
 import { FiUser, FiUsers, FiCheckSquare, FiCalendar } from "react-icons/fi";
 import Stat from "../../components/stat";
-import { SiteBodyMaxWidth } from "../../components/containers";
 import News from "./panels/news";
 import ElectionDate from "./panels/election_date";
 import Candidate from "./panels/candidate";
+import { onAuthStateChanged, auth } from "../../firebase";
+import { useState, useEffect, useRef } from "react";
 
 function Dashboard() {
+  const [currentUser, setCurrentUser] = useState();
+
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const firstFieldRef = useRef(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <Box>
       <Box
@@ -36,14 +62,37 @@ function Dashboard() {
         </Text>
         <Flex alignItems="center">
           <Text fontSize="18px" display="flex" color="white" mr="16px">
-            Hello, Daniel
+            Hello, {currentUser?.displayName}
           </Text>
-          <IconHolder bgColor={colors.gray} size={8}>
-            <FiUser fontSize={24} color={colors.grayText} />
-          </IconHolder>
+
+          <Popover>
+            <PopoverTrigger>
+              <Avatar name={currentUser?.displayName} />
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverBody>
+                <Center>
+                  <VStack p={4}>
+                    <Avatar name={currentUser?.displayName} size="2xl" />
+                    <Text fontSize="18px" display="flex" color="black">
+                      {currentUser?.displayName}
+                    </Text>
+                    <Text fontSize="18px" display="flex" color="black">
+                      {currentUser?.email}
+                    </Text>
+                    <Button colorScheme="red" size="lg" px={8}>
+                      Log Out
+                    </Button>
+                  </VStack>
+                </Center>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
         </Flex>
       </Box>
-      <SiteBodyMaxWidth>
+
+      <Box maxW={1440} margin="0 auto">
         <Text fontSize="24px" display="flex" color={colors.grayText} mb="12px">
           Statistics
         </Text>
@@ -98,7 +147,7 @@ function Dashboard() {
             <TabList backgroundColor={colors.gray} borderRadius={8} padding={2}>
               <Tab borderRadius={8}>News/Updates</Tab>
               <Tab borderRadius={8}>Electoral Candidates</Tab>
-              <Tab borderRadius={8}>Election Date</Tab>
+              <Tab borderRadius={8}>Elections Date</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
@@ -113,7 +162,7 @@ function Dashboard() {
             </TabPanels>
           </Tabs>
         </Box>
-      </SiteBodyMaxWidth>
+      </Box>
 
       {/* <Box bg={colors.primary} w="100%" py={2} bottom={0}>
         <Text fontSize="16px" color="white" textAlign="center">

@@ -6,7 +6,7 @@ export function SiteBodyMaxWidth({ children }) {
       maxW={1024}
       //   height="100vh"
       //   backgroundColor="darkmagenta"
-      margin="0 auto"
+      margin="auto 0"
     >
       {children}
     </Box>
