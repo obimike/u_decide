@@ -11,7 +11,6 @@ import {
 } from "native-base";
 import color from "../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
-
 import { Link, useRouter } from "expo-router";
 
 const Login = () => {

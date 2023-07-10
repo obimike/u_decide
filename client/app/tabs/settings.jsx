@@ -57,7 +57,6 @@ const Settings = () => {
         >
           Profile
         </Text>
-
         <Pressable onPress={() => router.push("/tabs/pages/profile")}>
           <HStack p={2} backgroundColor={color.white} rounded={8}>
             <Feather name="user" size={24} color={color.secondaryTextColor} />
@@ -72,7 +71,6 @@ const Settings = () => {
             </Text>
           </HStack>
         </Pressable>
-
         <Text
           fontFamily="Poppins-Regular"
           color={color.primary}
@@ -82,7 +80,7 @@ const Settings = () => {
         >
           Security
         </Text>
-        <Pressable>
+        <Pressable onPress={() => router.push("/tabs/pages/change_password")}>
           <HStack
             p={2}
             backgroundColor={color.white}
@@ -101,7 +99,8 @@ const Settings = () => {
             </Text>
           </HStack>
         </Pressable>
-        <Pressable mt={2}>
+
+        <Pressable mt={2} onPress={() => router.push("/tabs/pages/change_pin")}>
           <HStack
             p={2}
             backgroundColor={color.white}

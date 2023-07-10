@@ -12,26 +12,23 @@ import React from "react";
 import color from "../../../utils/color";
 import { useRouter } from "expo-router";
 
-const CandidateCards = () => {
+const ResultCard = () => {
   const router = useRouter();
   return (
     <Pressable
       width="100%"
       rounded="lg"
-      borderWidth={1}
-      borderColor={color.primary}
       backgroundColor={color.white}
       overflow="hidden"
       display="flex"
       flexDir="row"
       p={2}
-      onPress={() => {
-        router.push("/tabs/pages/candidate_details");
-      }}
+      borderWidth={1}
+      borderColor={color.primary}
     >
       <Image
-        w={84}
-        h={81}
+        w="64px"
+        h="68px"
         rounded="lg"
         mr={4}
         source={{
@@ -51,17 +48,35 @@ const CandidateCards = () => {
           fontFamily="Poppins-Regular"
           color={color.secondaryTextColor}
           fontSize={16}
-          noOfLines={2}
+          noOfLines={1}
           isTruncated
           w="90%"
         >
-          This system being implemented would enable whistleblowers to reports
-          of fraudulent We can easily extend the text component theme using
-          extendTheme function as described in the documentation
+          Votes:{" "}
+          <Text
+            fontFamily="Poppins-Regular"
+            color={color.primary}
+            fontSize={20}
+            noOfLines={1}
+            isTruncated
+            w="90%"
+          >
+            3,003,922
+          </Text>
+        </Text>
+        <Text
+          fontFamily="Poppins-Regular"
+          color={color.secondaryTextColor}
+          fontSize={14}
+          noOfLines={1}
+          isTruncated
+          w="90%"
+        >
+          Party: Labour Party
         </Text>
       </VStack>
     </Pressable>
   );
 };
 
-export default CandidateCards;
+export default ResultCard;

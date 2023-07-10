@@ -17,6 +17,7 @@ import { useRouter, Tabs } from "expo-router";
 import CategoryCard from "./components/categoryCard";
 
 const Vote = () => {
+  const router = useRouter();
   return (
     <Box h="100%">
       <HStack
@@ -32,7 +33,12 @@ const Vote = () => {
         >
           Elections
         </Text>
-        <Button backgroundColor={color.primary}>
+        <Button
+          backgroundColor={color.primary}
+          onPress={() => {
+            router.push("/tabs/pages/live_results");
+          }}
+        >
           <Text fontFamily="Poppins-Regular" color={color.white} fontSize={14}>
             Live Results
           </Text>

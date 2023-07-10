@@ -12,8 +12,10 @@ import {
 import React from "react";
 import color from "../../../utils/color";
 import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const CategoryCard = ({ categoryName, categoryRegion }) => {
+  const router = useRouter();
   return (
     <Box rounded="lg" backgroundColor={color.white} overflow="hidden" p={2}>
       <HStack justifyContent="space-between">
@@ -33,7 +35,11 @@ const CategoryCard = ({ categoryName, categoryRegion }) => {
             {categoryRegion}
           </Text>
         </Box>
-        <Button variant="outline" borderColor={color.primary}>
+        <Button
+          variant="outline"
+          borderColor={color.primary}
+          onPress={() => router.push("/tabs/pages/vote_category")}
+        >
           <Text
             fontFamily="Poppins-Regular"
             color={color.primary}

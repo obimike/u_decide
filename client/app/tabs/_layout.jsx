@@ -30,7 +30,6 @@ export default function AppLayout() {
             tabBarStyle: styles.tabStyle,
           }}
         />
-
         <Tabs.Screen
           name="vote"
           options={{
@@ -45,7 +44,6 @@ export default function AppLayout() {
             tabBarStyle: styles.tabStyle,
           }}
         />
-
         <Tabs.Screen
           // Name of the route to hide.
           name="settings"
@@ -85,6 +83,76 @@ export default function AppLayout() {
         <Tabs.Screen
           // Name of the route to hide.
           name="pages/terms"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/profile"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/change_pin"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/news_details"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/candidate_details"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/change_password"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="components/voteCard"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/vote_category"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/confirm_vote"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="pages/live_results"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          // Name of the route to hide.
+          name="components/resultCard"
           options={{
             href: null,
           }}
