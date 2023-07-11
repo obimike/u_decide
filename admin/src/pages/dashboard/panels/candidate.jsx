@@ -1,36 +1,116 @@
-import { useState } from "react";
-import { Text, Box, Button, Input, Textarea, Select } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import {
+  Text,
+  Box,
+  Button,
+  Input,
+  Textarea,
+  Select,
+  Center,
+} from "@chakra-ui/react";
 import { colors } from "../../../utils/colors";
-
-import IMG from "../../../images/ballot.png";
 import CandidateCard from "../../../components/candidate_card";
 import { statesOption } from "../utils/state";
 import { toggleLGA } from "../utils/lga";
 
+import {
+  addDoc,
+  collection,
+  db,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "../../../firebase";
+
 function Candidate() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [party, setParty] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [detail, setDetail] = useState("");
+  const [category, setCategory] = useState("");
+  const [runningMate, setRunningMate] = useState("");
   const [state, setState] = useState("");
-  const [lgaList, setLgaList] = useState([]);
-
   const [lga, setLga] = useState("");
+
+  const [lgaList, setLgaList] = useState([]);
+  const [candidate, setCandidate] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  console.log(state);
+  const [mate, setMate] = useState(true);
+  const [_state, set_State] = useState(true);
+  const [_lga, set_Lga] = useState(true);
+  const [update, setUpdate] = useState(false);
 
-  const addCandidate = (event) => {
+  useEffect(() => {
+    const getNews = async () => {
+      const querySnapshot = await getDocs(collection(db, "candidates"));
+      const fetchCandidate = [];
+      querySnapshot.forEach((doc) => {
+        const fetchItem = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        fetchCandidate.push(fetchItem);
+      });
+      setUpdate(!update);
+      setCandidate(fetchCandidate);
+    };
+
+    return () => {
+      getNews();
+    };
+  }, [update, loading]);
+
+  const deleteCandidate = async (id) => {
+    await deleteDoc(doc(db, "candidates", id));
+    setUpdate(!update);
+  };
+
+  const addCandidate = async (event) => {
     event.preventDefault();
 
     // clear message state
     setErrorMsg(null);
+    setSuccessMsg(null);
 
-    const isFieldsEmpty = email !== "" && password !== "";
+    const isFieldsEmpty =
+      name !== "" &&
+      party !== "" &&
+      imageUrl !== "" &&
+      detail !== "" &&
+      category !== "";
 
     if (!isFieldsEmpty) {
       setErrorMsg("All fields are required!");
     } else {
-      //  authUser();
-      //  navigate("/dashboard");
+      setLoading(true);
+      try {
+        await addDoc(collection(db, "candidates"), {
+          name,
+          party,
+          detail,
+          imageUrl,
+          category,
+          runningMate,
+          state,
+          lga,
+        });
+        setSuccessMsg("Electorial candidate added successfully.");
+        setName("");
+        setDetail("");
+        setParty("");
+        setImageUrl("");
+        setCategory("");
+        setState("");
+        setLga("");
+        setRunningMate("");
+        setLoading(false);
+      } catch (e) {
+        setErrorMsg("Error adding electorial candidate.");
+        setLoading(false);
+      }
     }
   };
 
@@ -49,6 +129,7 @@ function Candidate() {
             mb="4px"
             mt="12px"
             mr="24px"
+            fontWeight="bold"
           >
             Add Electorial Candidate
           </Text>
@@ -56,12 +137,24 @@ function Candidate() {
             <Text
               my={2}
               color="red"
-              fontSize="16px"
+              fontSize="18px"
               sx={{
                 textAlign: "start",
               }}
             >
               {errorMsg}
+            </Text>
+          )}
+          {successMsg && (
+            <Text
+              my={2}
+              color="green"
+              fontSize="18px"
+              sx={{
+                textAlign: "start",
+              }}
+            >
+              {successMsg}
             </Text>
           )}
         </Box>
@@ -71,7 +164,13 @@ function Candidate() {
           direction="column"
           justifyContent="space-between"
         >
-          <Text fontSize="16px" color={colors.grayText} mb="4px" mt="12px">
+          <Text
+            fontSize="16px"
+            fontWeight="bold"
+            color={colors.grayText}
+            mb="4px"
+            mt="12px"
+          >
             Candidate/Updates
           </Text>
         </Box>
@@ -91,9 +190,9 @@ function Candidate() {
               <Text fontSize="16px">Candidate Name</Text>
               <Input
                 placeholder="Enter Candidate Name"
-                value={email}
+                value={name}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setName(event.target.value)}
               />
 
               <Text fontSize="16px" mt={2}>
@@ -102,20 +201,24 @@ function Candidate() {
               <Select
                 placeholder="Select Candidate's Party"
                 borderColor={colors.primary}
+                value={party}
+                onChange={(event) => setParty(event.target.value)}
               >
-                <option value="option1">PDP</option>
-                <option value="option2">APC</option>
-                <option value="option3">Labour Party</option>
+                <option value="APC">APC</option>
+                <option value="APGA">APGA</option>
+                <option value="Labour Party">LP</option>
+                <option value="NNPP">NNPP</option>
+                <option value="PDP">PDP</option>
               </Select>
 
               <Text fontSize="16px" mt={2}>
-                Image Url
+                Candidate Image Url
               </Text>
               <Input
                 placeholder="Enter Image Link"
-                value={email}
+                value={imageUrl}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setImageUrl(event.target.value)}
               />
 
               <Text fontSize="16px" mt={2}>
@@ -123,9 +226,9 @@ function Candidate() {
               </Text>
               <Textarea
                 placeholder="Enter Candidate Details"
-                value={email}
+                value={detail}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setDetail(event.target.value)}
               />
 
               <Button
@@ -136,6 +239,8 @@ function Candidate() {
                 mt={4}
                 w="100%"
                 onClick={addCandidate}
+                loadingText="Adding candidate please wait..."
+                isLoading={loading}
               >
                 Add Candidate
               </Button>
@@ -151,20 +256,59 @@ function Candidate() {
               <Select
                 placeholder="Select Category"
                 borderColor={colors.primary}
+                value={category}
+                onChange={(event) => {
+                  setCategory(event.target.value);
+                  console.log(event.target.value);
+                  if (event.target.value === "Presidential Election") {
+                    setState("");
+                    setLga("");
+                    setMate(false);
+                    set_Lga(true);
+                    set_State(true);
+                  } else if (event.target.value === "Governorship Election") {
+                    setRunningMate("");
+                    setLga("");
+                    setMate(true);
+                    set_Lga(true);
+                    set_State(false);
+                  } else if (event.target.value === "Senatorial Election") {
+                    setRunningMate("");
+                    setMate(true);
+                    set_Lga(false);
+                    set_State(false);
+                  } else if (
+                    event.target.value === "House of Assembly Election"
+                  ) {
+                    setRunningMate("");
+                    setMate(true);
+                    set_Lga(false);
+                    set_State(false);
+                  }
+                }}
               >
-                <option value="option1">Presidential Election</option>
-                <option value="option2">Governorship Election</option>
-                <option value="option3">Senatorial Election</option>
-                <option value="option3">House of Assembly Election</option>
+                <option value="Presidential Election">
+                  Presidential Election
+                </option>
+                <option value="Governorship Election">
+                  Governorship Election
+                </option>
+                <option value="Senatorial Election">Senatorial Election</option>
+                <option value="House of Assembly Election">
+                  House of Assembly Election
+                </option>
               </Select>
               <Text fontSize="16px" mt={2}>
                 Running Mate's Name
               </Text>
               <Input
                 placeholder="Enter Name"
-                value={email}
+                value={runningMate}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => {
+                  setRunningMate(event.target.value);
+                }}
+                disabled={mate}
               />
               <Text fontSize="16px" mt={2}>
                 State
@@ -177,6 +321,7 @@ function Candidate() {
                   populateLGA(event.target.value);
                   setState(event.target.value);
                 }}
+                disabled={_state}
               >
                 {statesOption.map((item, i) => item)}
               </Select>
@@ -188,6 +333,7 @@ function Candidate() {
                 borderColor={colors.primary}
                 value={lga}
                 onChange={(event) => setLga(event.target.value)}
+                disabled={_lga}
               >
                 {lgaList.map((item, i) => (
                   <option value={item} key={i}>
@@ -201,24 +347,25 @@ function Candidate() {
 
         {/*  Candidate/Updates */}
         <Box w="40%" height="50vh" overflow="scroll" pb={4}>
-          <CandidateCard
-            name="Sam Gregory"
-            category="Presidential"
-            party="PDP"
-            imageUrl={IMG}
-          />
-          <CandidateCard
-            name="Chike Olegbe"
-            category="Governorship - Lagos"
-            party="APC"
-            imageUrl={IMG}
-          />
-          <CandidateCard
-            name="Sam Gregory"
-            category="Senatorial - Imo - Okigwe"
-            party="Labour Party"
-            imageUrl={IMG}
-          />
+          {candidate.length === 0 && (
+            <Center>
+              <Text
+                fontSize="18px"
+                alignSelf="center"
+                fontWeight="bold"
+                mt={24}
+              >
+                No Posted News/Updates.
+              </Text>
+            </Center>
+          )}
+          {candidate.map((item) => (
+            <CandidateCard
+              key={item.id}
+              candidate={item}
+              onClick={deleteCandidate}
+            />
+          ))}
         </Box>
       </Box>
     </Box>

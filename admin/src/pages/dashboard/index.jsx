@@ -13,26 +13,26 @@ import {
   Center,
   Avatar,
   PopoverArrow,
-  useDisclosure,
   PopoverBody,
   Button,
   VStack,
 } from "@chakra-ui/react";
 import { colors } from "../../utils/colors";
 
-import { FiUser, FiUsers, FiCheckSquare, FiCalendar } from "react-icons/fi";
+import { FiUsers, FiCheckSquare, FiCalendar } from "react-icons/fi";
 import Stat from "../../components/stat";
 import News from "./panels/news";
 import ElectionDate from "./panels/election_date";
 import Candidate from "./panels/candidate";
 import { onAuthStateChanged, auth } from "../../firebase";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { db, getDoc, doc } from "../../firebase";
 
 function Dashboard() {
   const [currentUser, setCurrentUser] = useState();
-
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  const firstFieldRef = useRef(null);
+  const [electionDate, setElectionDate] = useState("2023-06-22");
+  let navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -40,9 +40,27 @@ function Dashboard() {
         setCurrentUser(user);
       } else {
         setCurrentUser(null);
+        navigate("/");
       }
     });
     return unsubscribe;
+  }, [navigate]);
+
+  useEffect(() => {
+    const getDate = async () => {
+      const docRef = doc(db, "elections", "date");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        setElectionDate(docSnap.data().date.toString());
+      } else {
+        console.log("No such document!");
+      }
+    };
+
+    return () => {
+      getDate();
+    };
   }, []);
 
   return (
@@ -67,7 +85,10 @@ function Dashboard() {
 
           <Popover>
             <PopoverTrigger>
-              <Avatar name={currentUser?.displayName} />
+              <Avatar
+                name={currentUser?.displayName}
+                style={{ cursor: "pointer" }}
+              />
             </PopoverTrigger>
             <PopoverContent>
               <PopoverArrow />
@@ -81,7 +102,15 @@ function Dashboard() {
                     <Text fontSize="18px" display="flex" color="black">
                       {currentUser?.email}
                     </Text>
-                    <Button colorScheme="red" size="lg" px={8}>
+                    <Button
+                      colorScheme="red"
+                      size="lg"
+                      px={8}
+                      onClick={() => {
+                        auth.signOut();
+                        navigate("/");
+                      }}
+                    >
                       Log Out
                     </Button>
                   </VStack>
@@ -128,6 +157,7 @@ function Dashboard() {
             bgColor={colors.primary}
             title="Election Date"
             number="Sat, 7 February 2023"
+            date={electionDate}
           >
             <FiCalendar fontSize={24} color={colors.gray} />
           </Stat>
@@ -157,7 +187,7 @@ function Dashboard() {
                 <Candidate />
               </TabPanel>
               <TabPanel>
-                <ElectionDate />
+                <ElectionDate value={setElectionDate} />
               </TabPanel>
             </TabPanels>
           </Tabs>

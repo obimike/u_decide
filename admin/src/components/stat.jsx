@@ -1,5 +1,6 @@
 import { Text, Box, Flex } from "@chakra-ui/react";
 import IconHolder from "./iconHolder";
+import { format } from "date-fns";
 
 export default function Stat({
   color,
@@ -8,7 +9,9 @@ export default function Stat({
   children,
   title,
   number,
+  date,
 }) {
+  // console.log(format(new Date(electionDate), "do, MMMM yyyy"));
   return (
     <Box
       display="flex"
@@ -26,7 +29,9 @@ export default function Stat({
           {title}
         </Text>
         <Text fontSize="24px" display="flex" color={textColor}>
-          {number}
+          {date === undefined
+            ? number
+            : format(new Date(date), "do, MMMM yyyy")}
         </Text>
       </Flex>
     </Box>

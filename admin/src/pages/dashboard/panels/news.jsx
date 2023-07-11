@@ -1,28 +1,88 @@
-import { useState } from "react";
-import { Text, Box, Button, Input, Textarea } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { Text, Box, Button, Input, Textarea, Center } from "@chakra-ui/react";
 import { colors } from "../../../utils/colors";
 import NewsCard from "../../../components/news_card";
 
-import IMG from "../../../images/ballot.png";
+import {
+  collection,
+  addDoc,
+  db,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "../../../firebase";
 
 function News() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [title, setTitle] = useState("");
+  const [detail, setDetail] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+  const [date, setDate] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [news, setNews] = useState([]);
+  const [update, setUpdate] = useState(false);
 
-  const addNews = (event) => {
+  useEffect(() => {
+    const getNews = async () => {
+      const querySnapshot = await getDocs(collection(db, "news"));
+      const fetchNewsItems = [];
+      querySnapshot.forEach((doc) => {
+        // console.log(`${doc.id} => ${doc.data()}`);
+        const fetchItem = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        fetchNewsItems.push(fetchItem);
+        // console.log(doc);
+      });
+      setUpdate(!update);
+      setNews(fetchNewsItems);
+    };
+
+    return () => {
+      getNews();
+    };
+  }, [update, loading]);
+
+  const deleteNews = async (id) => {
+    console.log(id);
+    await deleteDoc(doc(db, "news", id));
+    setUpdate(!update);
+  };
+
+  const addNews = async (event) => {
     event.preventDefault();
-
     // clear message state
     setErrorMsg(null);
+    setSuccessMsg(null);
 
-    const isFieldsEmpty = email !== "" && password !== "";
+    const isFieldsEmpty =
+      title !== "" && detail !== "" && imageUrl !== "" && date !== null;
+
+    console.log(date);
 
     if (!isFieldsEmpty) {
       setErrorMsg("All fields are required!");
     } else {
-      //  authUser();
-      //  navigate("/dashboard");
+      setLoading(true);
+      try {
+        await addDoc(collection(db, "news"), {
+          title,
+          detail,
+          imageUrl,
+          date,
+        });
+        setSuccessMsg("News/Update item added successfully.");
+        setDate(null);
+        setDetail("");
+        setTitle("");
+        setImageUrl("");
+        setLoading(false);
+      } catch (e) {
+        setErrorMsg("Error adding News/Update item.");
+        setLoading(false);
+      }
     }
   };
 
@@ -49,6 +109,18 @@ function News() {
               }}
             >
               {errorMsg}
+            </Text>
+          )}
+          {successMsg && (
+            <Text
+              my={2}
+              color="green"
+              fontSize="18px"
+              sx={{
+                textAlign: "start",
+              }}
+            >
+              {successMsg}
             </Text>
           )}
         </Box>
@@ -78,9 +150,9 @@ function News() {
               <Text fontSize="16px">Title</Text>
               <Input
                 placeholder="Enter Title"
-                value={email}
+                value={title}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setTitle(event.target.value)}
               />
 
               <Text fontSize="16px" mt={2}>
@@ -88,9 +160,9 @@ function News() {
               </Text>
               <Textarea
                 placeholder="Enter News Details"
-                value={email}
+                value={detail}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setDetail(event.target.value)}
               />
 
               <Button
@@ -101,6 +173,8 @@ function News() {
                 mt={4}
                 w="100%"
                 onClick={addNews}
+                loadingText="Adding please wait..."
+                isLoading={loading}
               >
                 Add News
               </Button>
@@ -114,18 +188,18 @@ function News() {
               <Input
                 placeholder="Select Date"
                 borderColor={colors.primary}
-                value={password}
+                value={date}
                 type="date"
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={(event) => setDate(event.target.value)}
               />
               <Text fontSize="16px" mt={2}>
                 Image Url
               </Text>
               <Input
                 placeholder="Enter Image Link"
-                value={email}
+                value={imageUrl}
                 borderColor={colors.primary}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setImageUrl(event.target.value)}
               />
             </Box>
           </Box>
@@ -133,50 +207,21 @@ function News() {
 
         {/*  News/Updates */}
         <Box w="40%" height="50vh" overflow="scroll" pb={4}>
-          <NewsCard
-            title="This system being implemented would enable whistleblowers to reports of fraudulent."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="The quick brown fox jumps over the lazy dog is an English-language pangram—a 
-  sentence that contains all of the letters of the English alphabet. Owing to
-  its existence, Chakra was created."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="This system being implemented would enable whistleblowers to reports of fraudulent."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="This system being implemented would enable whistleblowers to reports of fraudulent."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="This system being implemented would enable whistleblowers to reports of fraudulent."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="The quick brown fox jumps over the lazy dog is an English-language pangram—a 
-  sentence that contains all of the letters of the English alphabet. Owing to
-  its existence, Chakra was created."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="This system being implemented would enable whistleblowers to reports of fraudulent."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
-          <NewsCard
-            title="This system being implemented would enable whistleblowers to reports of fraudulent."
-            date="22 July, 2023"
-            imageUrl={IMG}
-          />
+          {news.length === 0 && (
+            <Center>
+              <Text
+                fontSize="18px"
+                alignSelf="center"
+                fontWeight="bold"
+                mt={24}
+              >
+                No Posted News/Updates.
+              </Text>
+            </Center>
+          )}
+          {news.map((item) => (
+            <NewsCard key={item.id} news={item} onClick={deleteNews} />
+          ))}
         </Box>
       </Box>
     </Box>
