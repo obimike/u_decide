@@ -5,8 +5,6 @@ import {
   HStack,
   Center,
   Pressable,
-  KeyboardAvoidingView,
-  Input,
   ScrollView,
   VStack,
   Image,
@@ -14,10 +12,13 @@ import {
 import { useState, useEffect } from "react";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
-const CandidateDetails = () => {
+const CandidateDetails = (props) => {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const { name, party, detail } = params;
+  // console.log(imageUrl);
   return (
     <Box>
       <Box backgroundColor={color.white} padding={4}>
@@ -44,7 +45,7 @@ const CandidateDetails = () => {
           fontFamily="Poppins-Regular"
           mt={4}
         >
-          Peter Obi
+          {name}
         </Text>
         <Text
           color={color.secondaryTextColor}
@@ -52,7 +53,7 @@ const CandidateDetails = () => {
           fontFamily="Poppins-Regular"
           mt={2}
         >
-          Party: Labour Party
+          {party}
         </Text>
       </Box>
       <Box p={4}>
@@ -75,28 +76,7 @@ const CandidateDetails = () => {
             mt={4}
             mb={96}
           >
-            A writer often needs references for his papers. Sometimes he quotes
-            or takes several sentences from the reference source. In this case,
-            the rewriter or paraphrasing tool can be used as an alternative
-            method to make the quoted text not detect as plagiarism. The
-            plagiarism issue is a complicated situation during the process of
-            writing a paper or article. Hence, many ways can be implemented to
-            avoid plagiarism, for example, using a paraphrasing tool or an
-            article rewriter tool. For the best and maximal rewrite quality
-            results, you better read again and make a few corrections if needed
-            on the bestrewriter.com paraphrasing results. But definitely, your
-            spending time and thought on re-reading. A writer often needs
-            references for his papers. Sometimes he quotes or takes several
-            sentences from the reference source. In this case, the rewriter or
-            paraphrasing tool can be used as an alternative method to make the
-            quoted text not detect as plagiarism. The plagiarism issue is a
-            complicated situation during the process of writing a paper or
-            article. Hence, many ways can be implemented to avoid plagiarism,
-            for example, using a paraphrasing tool or an article rewriter tool.
-            For the best and maximal rewrite quality results, you better read
-            again and make a few corrections if needed on the bestrewriter.com
-            paraphrasing results. But definitely, your spending time and thought
-            on re-reading.
+            {detail}
           </Text>
         </ScrollView>
       </Box>

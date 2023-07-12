@@ -1,32 +1,32 @@
-import {
-  Box,
-  Text,
-  Button,
-  VStack,
-  Center,
-  Pressable,
-  Image,
-  AspectRatio,
-} from "native-base";
+import { Text, VStack, Pressable, Image } from "native-base";
 import React from "react";
 import color from "../../../utils/color";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
-const CandidateCards = () => {
+const CandidateCards = ({ candidate }) => {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const imageUrl = candidate.imageUrl;
   return (
     <Pressable
       width="100%"
       rounded="lg"
-      borderWidth={1}
-      borderColor={color.primary}
+      shadow="6"
       backgroundColor={color.white}
       overflow="hidden"
       display="flex"
       flexDir="row"
       p={2}
       onPress={() => {
-        router.push("/tabs/pages/candidate_details");
+        router.push({
+          pathname: "/tabs/pages/candidate_details",
+          params: {
+            name: candidate.name,
+            party: candidate.party,
+            detail: candidate.detail,
+          },
+        });
+        // router.push("/tabs/pages/candidate_details", { candidate: candidate });
       }}
     >
       <Image
@@ -35,7 +35,7 @@ const CandidateCards = () => {
         rounded="lg"
         mr={4}
         source={{
-          uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+          uri: candidate.imageUrl,
         }}
         alt="image"
       />
@@ -45,7 +45,7 @@ const CandidateCards = () => {
           color={color.textColor}
           fontSize={18}
         >
-          Peter Obi
+          {candidate.name}
         </Text>
         <Text
           fontFamily="Poppins-Regular"
@@ -55,9 +55,7 @@ const CandidateCards = () => {
           isTruncated
           w="90%"
         >
-          This system being implemented would enable whistleblowers to reports
-          of fraudulent We can easily extend the text component theme using
-          extendTheme function as described in the documentation
+          {candidate.detail}
         </Text>
       </VStack>
     </Pressable>

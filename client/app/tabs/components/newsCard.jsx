@@ -1,19 +1,10 @@
-import {
-  Box,
-  Text,
-  Button,
-  HStack,
-  Center,
-  Pressable,
-  Icon,
-  Image,
-  AspectRatio,
-} from "native-base";
+import { Box, Text, Pressable, Image, AspectRatio } from "native-base";
 import React from "react";
 import color from "../../../utils/color";
 import { useRouter } from "expo-router";
+import { format } from "date-fns";
 
-const NewsCard = () => {
+const NewsCard = ({ news }) => {
   const router = useRouter();
   return (
     <Pressable
@@ -23,17 +14,17 @@ const NewsCard = () => {
     >
       <Box
         w={285}
-        borderRadius={8}
         rounded="lg"
         backgroundColor={color.white}
         overflow="hidden"
         borderWidth={1}
         borderColor={color.primary}
+        shadow="4"
       >
         <AspectRatio w="100%" ratio={16 / 9}>
           <Image
             source={{
-              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+              uri: news.imageUrl,
             }}
             alt="image"
           />
@@ -43,8 +34,9 @@ const NewsCard = () => {
             fontFamily="Poppins-Regular"
             color={color.textColor}
             fontSize={16}
+            noOfLines={2}
           >
-            The office of the presidency has charged INEC to ensure free...
+            {news.title}
           </Text>
           <Text
             fontFamily="Poppins-Regular"
@@ -52,7 +44,7 @@ const NewsCard = () => {
             fontSize={14}
             mt={2}
           >
-            2nd, February 2023
+            {format(new Date(news.date), "do, MMMM yyyy")}
           </Text>
         </Box>
       </Box>
