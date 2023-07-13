@@ -1,14 +1,4 @@
-import {
-  Box,
-  Text,
-  Button,
-  VStack,
-  Center,
-  Pressable,
-  Image,
-  AspectRatio,
-  HStack,
-} from "native-base";
+import { Box, Text, Button, HStack } from "native-base";
 import React from "react";
 import color from "../../../utils/color";
 import { Feather } from "@expo/vector-icons";
@@ -38,7 +28,14 @@ const CategoryCard = ({ categoryName, categoryRegion }) => {
         <Button
           variant="outline"
           borderColor={color.primary}
-          onPress={() => router.push("/tabs/pages/vote_category")}
+          onPress={() =>
+            router.push({
+              pathname: "/tabs/pages/vote_category",
+              params: {
+                category: categoryName,
+              },
+            })
+          }
         >
           <Text
             fontFamily="Poppins-Regular"

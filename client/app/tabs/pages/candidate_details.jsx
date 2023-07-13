@@ -17,7 +17,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 const CandidateDetails = (props) => {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { name, party, detail } = params;
+  const { name, party, detail, imageUrl } = params;
   // console.log(imageUrl);
   return (
     <Box>
@@ -64,7 +64,7 @@ const CandidateDetails = (props) => {
             rounded="lg"
             mr={4}
             source={{
-              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+              uri: imageUrl,
             }}
             alt="image"
           />

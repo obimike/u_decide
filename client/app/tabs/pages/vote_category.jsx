@@ -3,9 +3,7 @@ import {
   Text,
   Icon,
   HStack,
-  Center,
   Pressable,
-  KeyboardAvoidingView,
   Input,
   ScrollView,
   VStack,
@@ -14,11 +12,13 @@ import {
 import { useState, useEffect } from "react";
 import color from "../../../utils/color";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import VoteCard from "../components/voteCard";
 
 const VoteCategory = () => {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const { category } = params;
   return (
     <Box>
       <Box backgroundColor={color.white} padding={4}>
@@ -45,7 +45,7 @@ const VoteCategory = () => {
           fontFamily="Poppins-Regular"
           mt={4}
         >
-          Presidential Election
+          {category}
         </Text>
         <Text
           color={color.secondaryTextColor}

@@ -24,6 +24,7 @@ const CandidateCards = ({ candidate }) => {
             name: candidate.name,
             party: candidate.party,
             detail: candidate.detail,
+            imageUrl: candidate.imageUrl,
           },
         });
         // router.push("/tabs/pages/candidate_details", { candidate: candidate });

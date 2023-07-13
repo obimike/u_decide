@@ -5,66 +5,14 @@ import color from "../../utils/color";
 import NewsCard from "./components/newsCard";
 import CandidateCards from "./components/candidateCards";
 import { useRouter } from "expo-router";
-import { auth, onAuthStateChanged, db, getDocs, collection } from "../firebase";
+
+import { useAuth } from "../../utils/authProvider";
 
 const Home = () => {
-  const [currentUser, setCurrentUser] = useState();
-  const [news, setNews] = useState([]);
-  const [candidate, setCandidate] = useState([]);
-
+  const { currentUser, candidate, news } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-        router.push("/");
-      }
-    });
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    const getCandidates = async () => {
-      const querySnapshot = await getDocs(collection(db, "candidates"));
-      const fetchCandidate = [];
-      querySnapshot.forEach((doc) => {
-        const fetchItem = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        fetchCandidate.push(fetchItem);
-      });
-      setCandidate(fetchCandidate);
-    };
-
-    return () => {
-      getCandidates();
-    };
-  }, []);
-
-  useEffect(() => {
-    const getNews = async () => {
-      const querySnapshot = await getDocs(collection(db, "news"));
-      const fetchNewsItems = [];
-      querySnapshot.forEach((item) => {
-        const fetchItem = {
-          id: item.id,
-          ...item.data(),
-        };
-        fetchNewsItems.push(fetchItem);
-        // console.log(doc);
-      });
-      setNews(fetchNewsItems);
-      console.log(fetchNewsItems);
-    };
-
-    return () => {
-      getNews();
-    };
-  }, []);
+  // console.log(candidate);
 
   return (
     <Box h="100%">
@@ -125,7 +73,7 @@ const Home = () => {
           Candidates
         </Text>
 
-        {candidate.length === 0 ? (
+        {candidate < 0 ? (
           <ScrollView showsVerticalScrollIndicator={false} h="48%">
             <VStack space={2} my={4}>
               <Box
