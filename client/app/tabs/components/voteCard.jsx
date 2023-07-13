@@ -1,18 +1,10 @@
-import {
-  Box,
-  Text,
-  Button,
-  VStack,
-  Center,
-  Pressable,
-  Image,
-  AspectRatio,
-} from "native-base";
+import { Box, Text, VStack, Pressable } from "native-base";
 import React from "react";
 import color from "../../../utils/color";
 import { useRouter } from "expo-router";
+import { Image } from "expo-image";
 
-const VoteCard = () => {
+const VoteCard = ({ candidate }) => {
   const router = useRouter();
   return (
     <Pressable
@@ -22,21 +14,17 @@ const VoteCard = () => {
       overflow="hidden"
       display="flex"
       flexDir="row"
+      shadow="6"
       p={2}
-      borderWidth={1}
-      borderColor={color.primary}
       onPress={() => {
         router.push("/tabs/pages/confirm_vote");
       }}
     >
       <Image
-        w="64px"
-        h="68px"
-        rounded="lg"
-        mr={4}
-        source={{
-          uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-        }}
+        width={84}
+        height={81}
+        style={{ marginRight: 8, borderRadius: 8 }}
+        source={candidate.imageUrl}
         alt="image"
       />
       <VStack width="80%" justifyContent="space-between">
@@ -45,7 +33,7 @@ const VoteCard = () => {
           color={color.textColor}
           fontSize={18}
         >
-          Peter Obi
+          {candidate.name}
         </Text>
         <Text
           fontFamily="Poppins-Regular"
@@ -55,17 +43,21 @@ const VoteCard = () => {
           isTruncated
           w="90%"
         >
-          Running mate: Datti Ahmed
+          {candidate.category === "Presidential Election" &&
+            "Running mate: " + candidate.runningMate}
+          {candidate.category === "Governorship Election" &&
+            candidate.state + " State"}
         </Text>
         <Text
           fontFamily="Poppins-Regular"
           color={color.secondaryTextColor}
+          fontWeight="bold"
           fontSize={14}
           noOfLines={1}
           isTruncated
           w="90%"
         >
-          Party: Labour Party
+          Party: {candidate.party}
         </Text>
       </VStack>
     </Pressable>

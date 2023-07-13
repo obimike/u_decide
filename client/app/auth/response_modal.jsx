@@ -2,18 +2,15 @@ import { Text, Button, Center } from "native-base";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import color from "../../utils/color";
-import { useRouter } from "expo-router";
 
 const DialogResponse = ({
   iconName,
   iconColor,
   title,
   message,
-  route,
   buttonText,
+  onClick,
 }) => {
-  const router = useRouter();
-
   return (
     <Center>
       <Feather name={iconName} size={64} color={iconColor} />
@@ -31,12 +28,12 @@ const DialogResponse = ({
       </Text>
       <Button
         marginTop={6}
-        backgroundColor={color.primary}
+        backgroundColor={iconColor}
         size="lg"
         width="100%"
         textAlign="center"
         _text={{ fontFamily: "Poppins-Regular" }}
-        onPress={() => router.push(route)}
+        onPress={onClick}
       >
         {buttonText}
       </Button>

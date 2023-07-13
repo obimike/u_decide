@@ -15,4 +15,22 @@ async function getValueFor(key) {
   }
 }
 
-export { save, getValueFor };
+function formatDate(date) {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+}
+
+function subtractDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() - days);
+  return result;
+}
+
+export { save, getValueFor, formatDate, subtractDays };

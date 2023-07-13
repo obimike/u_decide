@@ -37,9 +37,8 @@ const Login = () => {
       setLoading(true);
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
+          // // Signed in
+          // const user = userCredential.user;
           router.replace("/tabs");
         })
         .catch((error) => {

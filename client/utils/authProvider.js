@@ -1,5 +1,14 @@
-import { useState, useEffect, useContext, createContext } from "react";
-import { auth, onAuthStateChanged, db, getDocs, collection } from "../firebase";
+import { useState, useEffect, useContext, createContext, useRef } from "react";
+import {
+  auth,
+  onAuthStateChanged,
+  db,
+  getDocs,
+  collection,
+  doc,
+  getDoc,
+} from "../firebase";
+import { formatDate, subtractDays } from "../utils/helpers";
 
 const AuthContext = createContext();
 
@@ -7,7 +16,15 @@ export function UserProvider(props) {
   const [currentUser, setCurrentUser] = useState();
   const [news, setNews] = useState([]);
   const [candidate, setCandidate] = useState([]);
+  const [electionDate, setElectionDate] = useState(
+    formatDate(subtractDays(new Date(), 5))
+  );
+  const [_date, set_date] = useState(-1);
+
   const [loading, setLoading] = useState(true);
+
+  const candidateMounted = useRef(true);
+  const newsMounted = useRef(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -35,9 +52,10 @@ export function UserProvider(props) {
       });
       setCandidate(fetchCandidate);
       console.log("Candiduate Loaded");
+      candidateMounted.current = false;
     };
-
-    return getCandidates;
+    getCandidates();
+    // return candidateMounted.current;
   }, []);
 
   useEffect(() => {
@@ -53,10 +71,36 @@ export function UserProvider(props) {
         // console.log(doc);
       });
       setNews(fetchNewsItems);
+      newsMounted.current = false;
       console.log("News Loaded");
     };
+    getNews();
+    // return newsMounted.current;
+  }, [props]);
 
-    return getNews;
+  useEffect(() => {
+    const getDate = async () => {
+      const docRef = doc(db, "elections", "date");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setElectionDate(docSnap.data().date.toString());
+        const dateFromServer = formatDate(new Date(docSnap.data().date));
+        console.log(formatDate(new Date()) > dateFromServer);
+        if (formatDate(new Date()) < dateFromServer) {
+          set_date(1);
+          console.log("Server Date is in the future");
+        } else if (formatDate(new Date()) === dateFromServer) {
+          console.log("Server Date is as the date as today");
+          set_date(0);
+        } else if (formatDate(new Date()) > dateFromServer) {
+          console.log("Server Date is in the past");
+          set_date(-1);
+        }
+      } else {
+        console.log("No such document!");
+      }
+    };
+    getDate();
   }, []);
 
   const values = {
@@ -64,6 +108,8 @@ export function UserProvider(props) {
     setCurrentUser,
     candidate,
     news,
+    electionDate,
+    _date,
   };
 
   return (

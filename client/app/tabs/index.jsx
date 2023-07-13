@@ -1,19 +1,13 @@
 import { Box, Text, HStack, ScrollView, VStack, Skeleton } from "native-base";
 import { StyleSheet } from "react-native";
-import { useState, useEffect } from "react";
 import color from "../../utils/color";
 import NewsCard from "./components/newsCard";
 import CandidateCards from "./components/candidateCards";
-import { useRouter } from "expo-router";
 
 import { useAuth } from "../../utils/authProvider";
 
 const Home = () => {
   const { currentUser, candidate, news } = useAuth();
-  const router = useRouter();
-
-  // console.log(candidate);
-
   return (
     <Box h="100%">
       <Box backgroundColor={color.white}>

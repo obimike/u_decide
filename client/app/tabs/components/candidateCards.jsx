@@ -1,7 +1,8 @@
-import { Text, VStack, Pressable, Image } from "native-base";
+import { Text, VStack, Pressable } from "native-base";
 import React from "react";
 import color from "../../../utils/color";
 import { useRouter, useLocalSearchParams } from "expo-router";
+import { Image } from "expo-image";
 
 const CandidateCards = ({ candidate }) => {
   const router = useRouter();
@@ -31,13 +32,10 @@ const CandidateCards = ({ candidate }) => {
       }}
     >
       <Image
-        w={84}
-        h={81}
-        rounded="lg"
-        mr={4}
-        source={{
-          uri: candidate.imageUrl,
-        }}
+        width={84}
+        height={81}
+        style={{ marginRight: 8, borderRadius: 8 }}
+        source={candidate.imageUrl}
         alt="image"
       />
       <VStack width="80%" justifyContent="space-between">

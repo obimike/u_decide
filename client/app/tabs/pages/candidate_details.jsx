@@ -1,24 +1,13 @@
-import {
-  Box,
-  Text,
-  Button,
-  HStack,
-  Center,
-  Pressable,
-  ScrollView,
-  VStack,
-  Image,
-} from "native-base";
-import { useState, useEffect } from "react";
+import { Box, Text, HStack, Pressable, ScrollView } from "native-base";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
+import { Image } from "expo-image";
 
 const CandidateDetails = (props) => {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { name, party, detail, imageUrl } = params;
-  // console.log(imageUrl);
   return (
     <Box>
       <Box backgroundColor={color.white} padding={4}>
@@ -59,13 +48,10 @@ const CandidateDetails = (props) => {
       <Box p={4}>
         <ScrollView showsVerticalScrollIndicator={false} w="full">
           <Image
-            w="100%"
-            h={240}
-            rounded="lg"
-            mr={4}
-            source={{
-              uri: imageUrl,
-            }}
+            width="100%"
+            height={240}
+            style={{ marginRight: 8, borderRadius: 8 }}
+            source={imageUrl}
             alt="image"
           />
           <Text

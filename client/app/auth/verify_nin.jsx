@@ -15,6 +15,16 @@ import { MaterialIcons, Feather } from "@expo/vector-icons";
 
 import { useState } from "react";
 import DialogResponse from "./response_modal";
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  collection,
+  getDocs,
+  db,
+  query,
+  where,
+} from "../../firebase";
 
 const VerifyNIN = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -24,20 +34,47 @@ const VerifyNIN = () => {
   const [route, setRoute] = useState("");
   const [iconColor, setIconColor] = useState();
   const [buttonText, setButtonText] = useState("");
-
-  const handleSizeClick = () => {
-    setIconName("thumbs-down");
-    setIconColor(color.error);
-    setButtonText("Proceed");
-    setRoute("/auth/register");
-    setTitle("Verification Successful");
-    setMessage(
-      "Congratulations you are eligible to vote, please proceed by clicking on the button below to complete your registration.."
-    );
-    setModalVisible(!modalVisible);
-  };
+  const [NIN, setNIN] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  const handleSizeClick = async () => {
+    if (NIN !== "") {
+      setLoading(true);
+      const ninRef = collection(db, "nin");
+      const q = query(ninRef, where("numbers", "array-contains", NIN));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        setIconName("thumbs-up");
+        setIconColor(color.primary);
+        setButtonText("Proceed");
+        setRoute("/auth/register");
+        setTitle("Verification Successful");
+        setMessage(
+          "Congratulations you are eligible to vote, please proceed by clicking on the button below to complete your registration.."
+        );
+        setModalVisible(!modalVisible);
+        setLoading(false);
+      } else {
+        setIconName("thumbs-down");
+        setIconColor(color.error);
+        setButtonText("Cancel");
+        setRoute("/auth/verify_nin");
+        setTitle("Verification Failed");
+        setMessage(
+          "Sorry you not eligible to vote, please check the NIN you provided and try again."
+        );
+        setModalVisible(!modalVisible);
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleOnclick = () => {
+    setModalVisible(!modalVisible);
+    router.push(route);
+  };
 
   return (
     <>
@@ -90,6 +127,8 @@ const VerifyNIN = () => {
             size="xl"
             placeholder="Enter NIN"
             borderColor={color.primary}
+            value={NIN}
+            onChangeText={(text) => setNIN(text)}
           />
         </Box>
 
@@ -101,8 +140,10 @@ const VerifyNIN = () => {
           textAlign="center"
           _text={{ fontFamily: "Poppins-Regular" }}
           onPress={() => handleSizeClick()}
+          isLoadingText="Verifying your NIN..."
+          isLoading={loading}
         >
-          Continue
+          Verify NIN
         </Button>
       </Box>
 
@@ -114,57 +155,18 @@ const VerifyNIN = () => {
       >
         <Modal.Content>
           <Modal.Body>
-            <ResponseModal
+            <DialogResponse
               title={title}
               iconColor={iconColor}
               iconName={iconName}
               message={message}
               buttonText={buttonText}
-              route={route}
+              onClick={handleOnclick}
             />
           </Modal.Body>
         </Modal.Content>
       </Modal>
     </>
-  );
-};
-
-const ResponseModal = ({
-  iconName,
-  iconColor,
-  title,
-  message,
-  route,
-  buttonText,
-}) => {
-  const router = useRouter();
-  return (
-    <Center>
-      <Feather name={iconName} size={64} color={iconColor} />
-      <Text
-        fontFamily="Poppins-Regular"
-        color={iconColor}
-        textAlign="left"
-        fontSize="2xl"
-        my={2}
-      >
-        {title}
-      </Text>
-      <Text textAlign="center" fontFamily="Poppins-Regular">
-        {message}
-      </Text>
-      <Button
-        marginTop={6}
-        backgroundColor={color.primary}
-        size="lg"
-        width="100%"
-        textAlign="center"
-        _text={{ fontFamily: "Poppins-Regular" }}
-        onPress={() => router.push(route)}
-      >
-        {buttonText}
-      </Button>
-    </Center>
   );
 };
 
