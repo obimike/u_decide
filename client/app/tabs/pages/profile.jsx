@@ -6,7 +6,6 @@ import {
   Center,
   Pressable,
   Icon,
-  Image,
   ScrollView,
   VStack,
 } from "native-base";
@@ -14,8 +13,12 @@ import { useState, useEffect } from "react";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useAuth } from "../../../utils/authProvider";
+import { Image } from "expo-image";
+import { formatDate } from "../../../utils/helpers";
 
 const Profile = () => {
+  const { User } = useAuth();
   const router = useRouter();
   return (
     <Box>
@@ -50,13 +53,10 @@ const Profile = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Center>
             <Image
-              w={144}
-              h={144}
-              rounded="full"
-              mr={2}
-              source={{
-                uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-              }}
+              width={160}
+              height={160}
+              style={{ borderRadius: 200 }}
+              source={User?.imageUrl}
               alt="image"
             />
           </Center>
@@ -74,7 +74,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                Jerry
+                {User?.firstName}
               </Text>
             </VStack>
             <VStack>
@@ -90,7 +90,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                Seijaro
+                {User?.lastName}
               </Text>
             </VStack>
           </HStack>
@@ -107,7 +107,7 @@ const Profile = () => {
               fontSize={16}
               fontFamily="Poppins-Regular"
             >
-              Jerry_Seijaro@gmail.com
+              {User?.email}
             </Text>
           </VStack>
           <HStack mt={4}>
@@ -124,7 +124,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                Male
+                {User?.gender}
               </Text>
             </VStack>
             <VStack>
@@ -140,7 +140,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                13089063165
+                {User?.nin}
               </Text>
             </VStack>
           </HStack>
@@ -158,7 +158,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                2347037262901
+                {User?.phone}
               </Text>
             </VStack>
             <VStack>
@@ -174,7 +174,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                29 July, 1999
+                {new Date(formatDate(User?.dob.toDate())).toDateString()}
               </Text>
             </VStack>
           </HStack>
@@ -192,7 +192,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                Lagos State
+                {User?.state} State
               </Text>
             </VStack>
             <VStack width="35%">
@@ -208,7 +208,7 @@ const Profile = () => {
                 fontSize={16}
                 fontFamily="Poppins-Regular"
               >
-                Ikosi
+                {User?.lga}
               </Text>
             </VStack>
           </HStack>

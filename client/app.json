@@ -5,6 +5,14 @@
       "bundler": "metro"
     },
     "name": "client",
-    "slug": "client"
+    "slug": "client",
+    "extra": {
+      "eas": {
+        "projectId": "74bb922f-fd3c-495d-81e8-6a688438fd90"
+      }
+    },
+    "android": {
+      "package": "com.udecide.client"
+    }
   }
 }

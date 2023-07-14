@@ -4,160 +4,164 @@ import { Tabs } from "expo-router/tabs";
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 
+import { UserProvider } from "../../utils/authProvider";
+
 export default function AppLayout() {
   return (
     <NativeBaseProvider>
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-          statusBarHidden: false,
-          statusBarColor: color.statusBar,
-          tabBarAllowFontScaling: true,
-        }}
-      >
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="index"
-          options={{
-            href: "/tabs",
-            tabBarActiveTintColor: color.primary,
-            tabBarInactiveTintColor: color.secondaryTextColor,
-            tabBarLabelStyle: styles.tabText,
-            title: "Home",
-            tabBarIcon: ({ color }) => (
-              <Feather name="home" size={24} color={color} />
-            ),
-            tabBarStyle: styles.tabStyle,
+      <UserProvider>
+        <Tabs
+          screenOptions={{
+            headerShown: false,
+            statusBarHidden: false,
+            statusBarColor: color.statusBar,
+            tabBarAllowFontScaling: true,
           }}
-        />
-        <Tabs.Screen
-          name="vote"
-          options={{
-            href: "tabs/vote",
-            tabBarActiveTintColor: color.primary,
-            tabBarInactiveTintColor: color.secondaryTextColor,
-            tabBarLabelStyle: styles.tabText,
-            title: "Vote",
-            tabBarIcon: ({ color }) => (
-              <Feather name="archive" size={24} color={color} />
-            ),
-            tabBarStyle: styles.tabStyle,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="settings"
-          options={{
-            href: "tabs/settings",
-            tabBarActiveTintColor: color.primary,
-            tabBarInactiveTintColor: color.secondaryTextColor,
-            tabBarLabelStyle: styles.tabText,
-            title: "Settings",
-            tabBarIcon: ({ color }) => (
-              <Feather name="settings" size={24} color={color} />
-            ),
-            tabBarStyle: styles.tabStyle,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="components/newsCard"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="components/candidateCards"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="components/categoryCard"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/terms"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/profile"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/change_pin"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/news_details"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/candidate_details"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/change_password"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="components/voteCard"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/vote_category"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/confirm_vote"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="pages/live_results"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          // Name of the route to hide.
-          name="components/resultCard"
-          options={{
-            href: null,
-          }}
-        />
-      </Tabs>
+        >
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="index"
+            options={{
+              href: "/tabs",
+              tabBarActiveTintColor: color.primary,
+              tabBarInactiveTintColor: color.secondaryTextColor,
+              tabBarLabelStyle: styles.tabText,
+              title: "Home",
+              tabBarIcon: ({ color }) => (
+                <Feather name="home" size={24} color={color} />
+              ),
+              tabBarStyle: styles.tabStyle,
+            }}
+          />
+          <Tabs.Screen
+            name="vote"
+            options={{
+              href: "tabs/vote",
+              tabBarActiveTintColor: color.primary,
+              tabBarInactiveTintColor: color.secondaryTextColor,
+              tabBarLabelStyle: styles.tabText,
+              title: "Vote",
+              tabBarIcon: ({ color }) => (
+                <Feather name="archive" size={24} color={color} />
+              ),
+              tabBarStyle: styles.tabStyle,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="settings"
+            options={{
+              href: "tabs/settings",
+              tabBarActiveTintColor: color.primary,
+              tabBarInactiveTintColor: color.secondaryTextColor,
+              tabBarLabelStyle: styles.tabText,
+              title: "Settings",
+              tabBarIcon: ({ color }) => (
+                <Feather name="settings" size={24} color={color} />
+              ),
+              tabBarStyle: styles.tabStyle,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="components/newsCard"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="components/candidateCards"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="components/categoryCard"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/terms"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/profile"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/change_pin"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/news_details"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/candidate_details"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/change_password"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="components/voteCard"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/vote_category"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/confirm_vote"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="pages/live_results"
+            options={{
+              href: null,
+            }}
+          />
+          <Tabs.Screen
+            // Name of the route to hide.
+            name="components/resultCard"
+            options={{
+              href: null,
+            }}
+          />
+        </Tabs>
+      </UserProvider>
     </NativeBaseProvider>
   );
 }

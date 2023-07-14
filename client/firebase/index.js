@@ -11,7 +11,8 @@ import {
   deleteDoc,
   doc,
   setDoc,
-  getDoc
+  getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -21,6 +22,8 @@ import {
   updateProfile,
   signOut,
 } from "firebase/auth";
+
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDg-cGzN_XgkNcSG8bmQ3Biosmpv1AvEBc",
@@ -37,6 +40,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export const analytics = getAnalytics(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 export {
   onAuthStateChanged,
@@ -55,4 +59,9 @@ export {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
+  storage,
+  ref,
+  getDownloadURL,
+  uploadBytes,
 };

@@ -14,6 +14,7 @@ const AuthContext = createContext();
 
 export function UserProvider(props) {
   const [currentUser, setCurrentUser] = useState();
+  const [User, setUser] = useState();
   const [news, setNews] = useState([]);
   const [candidate, setCandidate] = useState([]);
   const [electionDate, setElectionDate] = useState(
@@ -30,6 +31,7 @@ export function UserProvider(props) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
+        getUserDetials(user.uid);
         setLoading(false);
       } else {
         setCurrentUser(null);
@@ -50,6 +52,7 @@ export function UserProvider(props) {
         };
         fetchCandidate.push(fetchItem);
       });
+
       setCandidate(fetchCandidate);
       console.log("Candiduate Loaded");
       candidateMounted.current = false;
@@ -103,6 +106,16 @@ export function UserProvider(props) {
     getDate();
   }, []);
 
+  const getUserDetials = async (id) => {
+    const docRef = doc(db, "users", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setUser(docSnap.data());
+    } else {
+      console.log("No such user!");
+    }
+  };
+
   const values = {
     currentUser,
     setCurrentUser,
@@ -110,6 +123,8 @@ export function UserProvider(props) {
     news,
     electionDate,
     _date,
+    setUser,
+    User,
   };
 
   return (

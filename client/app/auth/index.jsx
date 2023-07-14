@@ -179,7 +179,9 @@ const Login = () => {
         >
           Don’t have an account?
         </Text>
-        <Link href="/auth/verify_nin">
+
+        {/* <Link href="/auth/verify_nin"> */}
+        <Link href="/auth/face_id">
           <Text
             fontFamily="Poppins-Regular"
             color={color.primary}

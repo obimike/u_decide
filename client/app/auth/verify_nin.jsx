@@ -7,24 +7,14 @@ import {
   Pressable,
   Icon,
   Modal,
-  Center,
 } from "native-base";
 import color from "../../utils/color";
 import { useRouter } from "expo-router";
-import { MaterialIcons, Feather } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { useState } from "react";
 import DialogResponse from "./response_modal";
-import {
-  auth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  collection,
-  getDocs,
-  db,
-  query,
-  where,
-} from "../../firebase";
+import { collection, getDocs, db, query, where } from "../../firebase";
 
 const VerifyNIN = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -73,7 +63,12 @@ const VerifyNIN = () => {
 
   const handleOnclick = () => {
     setModalVisible(!modalVisible);
-    router.push(route);
+    router.push({
+      pathname: route,
+      params: {
+        nin: NIN,
+      },
+    });
   };
 
   return (

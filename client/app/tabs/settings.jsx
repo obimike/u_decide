@@ -5,30 +5,27 @@ import {
   HStack,
   Center,
   Pressable,
-  Icon,
-  Image,
-  ScrollView,
   VStack,
 } from "native-base";
-import { StyleSheet } from "react-native";
-import { useState, useEffect } from "react";
 import color from "../../utils/color";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
+import { auth } from "../../firebase";
+import { useAuth } from "../../utils/authProvider";
+import { Image } from "expo-image";
+
 const Settings = () => {
   const router = useRouter();
+  const { currentUser, User } = useAuth();
   return (
     <Box>
       <HStack backgroundColor={color.white} padding={4}>
         <Image
-          w={12}
-          h={12}
-          rounded="full"
-          mr={2}
-          source={{
-            uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-          }}
+          width={48}
+          height={48}
+          style={{ borderRadius: 24, marginRight: 8 }}
+          source={User?.imageUrl}
           alt="image"
         />
         <VStack alignSelf="center">
@@ -37,14 +34,14 @@ const Settings = () => {
             fontSize={20}
             fontFamily="Poppins-Regular"
           >
-            Jerry Seijaro
+            {currentUser?.displayName}
           </Text>
           <Text
             color={color.secondaryTextColor}
             fontSize={14}
             fontFamily="Poppins-Regular"
           >
-            Lagos State
+            {User?.state} State
           </Text>
         </VStack>
       </HStack>
@@ -154,7 +151,16 @@ const Settings = () => {
       </Box>
 
       <Center mt={24}>
-        <Button backgroundColor={color.error} size="lg" rounded="lg" px={8}>
+        <Button
+          backgroundColor={color.error}
+          size="lg"
+          rounded="lg"
+          px={8}
+          onPress={() => {
+            auth.signOut();
+            router.push("/auth");
+          }}
+        >
           <Text fontFamily="Poppins-Regular" color={color.white} fontSize={14}>
             Log Out
           </Text>
