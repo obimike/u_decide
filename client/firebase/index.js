@@ -20,6 +20,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  updatePassword,
   signOut,
 } from "firebase/auth";
 
@@ -64,4 +65,5 @@ export {
   ref,
   getDownloadURL,
   uploadBytes,
+  updatePassword,
 };

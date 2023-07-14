@@ -1,15 +1,12 @@
 import {
   Box,
   Text,
-  Button,
   HStack,
   Center,
   Pressable,
-  Icon,
   ScrollView,
   VStack,
 } from "native-base";
-import { useState, useEffect } from "react";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";

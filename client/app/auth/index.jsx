@@ -28,9 +28,6 @@ const Login = () => {
     setErrorMsg(null);
     const isFieldsEmpty = email !== "" && password !== "";
 
-    console.log(email);
-    console.log(password);
-
     if (!isFieldsEmpty) {
       setErrorMsg("All fields are required!");
     } else {
@@ -180,8 +177,8 @@ const Login = () => {
           Don’t have an account?
         </Text>
 
-        {/* <Link href="/auth/verify_nin"> */}
-        <Link href="/auth/face_id">
+        <Link href="/auth/verify_nin">
+          {/* <Link href="/auth/face_id"> */}
           <Text
             fontFamily="Poppins-Regular"
             color={color.primary}

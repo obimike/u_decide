@@ -6,21 +6,70 @@ import {
   Center,
   Pressable,
   KeyboardAvoidingView,
-  Image,
   ScrollView,
   VStack,
 } from "native-base";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import SmoothPinCodeInput from "@zfloc/react-native-smooth-pincode-input";
 
-const ChangePin = () => {
-  const [pin, setPin] = useState();
-  const [confirmPin, setConfirmPin] = useState();
+import { db, doc, getDoc, updateDoc } from "../../../firebase";
+import { useAuth } from "../../../utils/authProvider";
 
+const ChangePin = () => {
+  const [currentPin, setCurrentPin] = useState("");
+  const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const { currentUser } = useAuth();
   const router = useRouter();
+
+  const handleChange = async () => {
+    try {
+      setErrorMsg(null);
+      setSuccessMsg(null);
+      const isFieldsEmpty =
+        currentPin !== "" && pin !== "" && confirmPin !== "";
+      const isPinMatch = pin === confirmPin;
+      if (!isFieldsEmpty) {
+        setErrorMsg("All fields are required!");
+      } else {
+        if (isPinMatch) {
+          setLoading(true);
+          const docRef = doc(db, "users", currentUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            console.log("----docSnap.exists()-----");
+            if (docSnap.data().pin === currentPin) {
+              console.log("----docRef.data().pin === currentPin-----");
+              await updateDoc(doc(db, "users", currentUser.uid), { pin });
+              setSuccessMsg(
+                "Pin change was suceessful,\n Your new pin will be used to confirm your vote"
+              );
+              setLoading(false);
+            } else {
+              setErrorMsg("Your current PIN is wrong!");
+              setLoading(false);
+            }
+          } else {
+            console.log("No such user!");
+            setLoading(false);
+          }
+        } else {
+          setErrorMsg("Your PIN do not match!");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   return (
     <Box>
       <Box backgroundColor={color.white} padding={4}>
@@ -50,6 +99,31 @@ const ChangePin = () => {
           Change PIN
         </Text>
       </Box>
+      {/* Setting feedback messages */}
+      {errorMsg && (
+        <Text
+          m={4}
+          color={color.error}
+          fontSize="18px"
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          {errorMsg}
+        </Text>
+      )}
+      {successMsg && (
+        <Text
+          fontFamily="Poppins-Regular"
+          my={4}
+          color={color.primary}
+          fontSize="lg"
+          textAlign="center"
+        >
+          {successMsg}
+        </Text>
+      )}
+
       <Box p={4}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView>
@@ -69,8 +143,8 @@ const ChangePin = () => {
                   //   cellSize={42}
                   codeLength={4}
                   cellSpacing={16}
-                  value={pin}
-                  onTextChange={(password) => setPin(password)}
+                  value={currentPin}
+                  onTextChange={(password) => setCurrentPin(password)}
                   cellStyle={{
                     borderWidth: 2,
                     borderColor: color.primary,
@@ -123,8 +197,8 @@ const ChangePin = () => {
                   //   cellSize={42}
                   codeLength={4}
                   cellSpacing={16}
-                  value={pin}
-                  onTextChange={(password) => setPin(password)}
+                  value={confirmPin}
+                  onTextChange={(password) => setConfirmPin(password)}
                   cellStyle={{
                     borderWidth: 2,
                     borderColor: color.primary,
@@ -143,7 +217,9 @@ const ChangePin = () => {
                   width="85%"
                   textAlign="center"
                   _text={{ fontFamily: "Poppins-Regular" }}
-                  // onPress={() => router.push("/auth/face_id")}
+                  isLoadingText="Changing Vote PIN..."
+                  // isLoading={loading}
+                  onPress={handleChange}
                 >
                   <Text
                     fontFamily="Poppins-Regular"
