@@ -4,7 +4,7 @@ import color from "../../../utils/color";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
-const CategoryCard = ({ categoryName, categoryRegion }) => {
+const CategoryCard = ({ categoryName, categoryRegion, voted }) => {
   const router = useRouter();
   return (
     <Box rounded="lg" backgroundColor={color.white} overflow="hidden" p={2}>
@@ -28,6 +28,7 @@ const CategoryCard = ({ categoryName, categoryRegion }) => {
         <Button
           variant="outline"
           borderColor={color.primary}
+          isDisabled={voted}
           onPress={() =>
             router.push({
               pathname: "/tabs/pages/vote_category",
@@ -42,7 +43,7 @@ const CategoryCard = ({ categoryName, categoryRegion }) => {
             color={color.primary}
             fontSize={16}
           >
-            Vote
+            {voted ? "Voted" : "Vote"}
           </Text>
         </Button>
       </HStack>

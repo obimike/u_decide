@@ -7,8 +7,10 @@ import IMAGE from "../../assets/images/no_election.png";
 import { useAuth } from "../../utils/authProvider";
 
 const Vote = () => {
-  const { _date, electionDate } = useAuth();
+  const { _date, electionDate, User } = useAuth();
+
   const router = useRouter();
+  // console.log(User);
 
   return (
     <Box h="100%">
@@ -48,18 +50,22 @@ const Vote = () => {
             <CategoryCard
               categoryName="Presidential Election"
               categoryRegion="Nationwide"
+              voted={User.voted["Presidential Election"]}
             />
             <CategoryCard
               categoryName="Governorship Election"
-              categoryRegion="Lagos State"
+              categoryRegion="State"
+              voted={User.voted["Governorship Election"]}
             />
             <CategoryCard
               categoryName="Senatorial Election"
               categoryRegion="Senatorial zone"
+              voted={User.voted["Senatorial Election"]}
             />
             <CategoryCard
               categoryName="House of Assembly Election"
               categoryRegion="Constituency"
+              voted={User.voted["House of Assembly Election"]}
             />
           </VStack>
         )}

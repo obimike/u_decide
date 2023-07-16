@@ -8,7 +8,6 @@ import {
   ScrollView,
   VStack,
   Skeleton,
-  Flex,
 } from "native-base";
 import { useState, useEffect } from "react";
 import color from "../../../utils/color";
@@ -17,17 +16,21 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import VoteCard from "../components/voteCard";
 
 import { collection, query, where, getDocs, db } from "../../../firebase";
+import { useAuth } from "../../../utils/authProvider";
 
 const VoteCategory = () => {
   const [result, setResult] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [_query, setQuery] = useState("");
+
+  const { User } = useAuth();
 
   const router = useRouter();
   const params = useLocalSearchParams();
   const { category } = params;
 
-  console.log(category);
-
   useEffect(() => {
+    setResult([]);
     const getCandidates = async () => {
       const q = query(
         collection(db, "candidates"),
@@ -35,19 +38,62 @@ const VoteCategory = () => {
       );
       const querySnapshot = await getDocs(q);
 
+      const fetchGovernorship = [];
+      const fetchSenatorial = [];
+      const fetchHOA = [];
       const fetchResult = [];
       querySnapshot.forEach((doc) => {
         const fetchItem = {
           id: doc.id,
           ...doc.data(),
         };
-        fetchResult.push(fetchItem);
+
+        if (category === "Governorship Election") {
+          if (doc.data().state === User.state) {
+            fetchGovernorship.push(fetchItem);
+          }
+        } else if (category === "Senatorial Election") {
+          if (doc.data().state === User.state && doc.data().lga === User.lga) {
+            fetchSenatorial.push(fetchItem);
+          }
+        } else if (category === "House of Assembly Election") {
+          if (doc.data().state === User.state && doc.data().lga === User.lga) {
+            fetchHOA.push(fetchItem);
+          }
+        } else {
+          fetchResult.push(fetchItem);
+        }
       });
-      setResult(fetchResult);
-      console.log("Electorial Candiduate  Loaded");
+
+      if (category === "Governorship Election") {
+        setResult(fetchGovernorship);
+        setFilteredData(fetchGovernorship);
+        console.log("Governorship Electorial Candiduate  Loaded");
+      } else if (category === "Senatorial Election") {
+        setResult(fetchSenatorial);
+        setFilteredData(fetchSenatorial);
+        console.log("Senatorial Electorial Candiduate  Loaded");
+      } else if (category === "House of Assembly Election") {
+        setResult(fetchHOA);
+        setFilteredData(fetchHOA);
+        console.log("House of Assembly Electorial Candiduate  Loaded");
+      } else {
+        setResult(fetchResult);
+        setFilteredData(fetchResult);
+        console.log("Presidential Electorial Candiduate  Loaded");
+      }
     };
     getCandidates();
   }, [category]);
+
+  const filtered = (e) => {
+    const filtered =
+      result &&
+      result.filter((item) => {
+        return item.name.toLowerCase().startsWith(e.toLowerCase());
+      });
+    setFilteredData(filtered);
+  };
 
   return (
     <Box>
@@ -102,12 +148,17 @@ const VoteCategory = () => {
             />
           }
           placeholder="Search candidate by name"
+          value={_query}
+          onChangeText={(text) => {
+            setQuery(text);
+            filtered(text);
+          }}
         />
 
         {result.length > 0 ? (
-          <ScrollView showsVerticalScrollIndicator={false} h="48%">
+          <ScrollView showsVerticalScrollIndicator={false} h="78%">
             <VStack space={2} my={4}>
-              {result.map((item) => (
+              {filteredData.map((item) => (
                 <VoteCard key={item.id} candidate={item} />
               ))}
             </VStack>

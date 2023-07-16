@@ -3,12 +3,16 @@ import React from "react";
 import color from "../../../utils/color";
 import { useRouter } from "expo-router";
 import { format } from "date-fns";
+import { useAuth } from "../../../utils/authProvider";
 
 const NewsCard = ({ news }) => {
+  const { setNewsObject } = useAuth();
   const router = useRouter();
   return (
     <Pressable
       onPress={() => {
+        setNewsObject({});
+        setNewsObject(news);
         router.push("/tabs/pages/news_details");
       }}
     >

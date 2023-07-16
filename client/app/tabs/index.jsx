@@ -67,55 +67,55 @@ const Home = () => {
           Candidates
         </Text>
 
-        {candidate < 0 ? (
-          <ScrollView showsVerticalScrollIndicator={false} h="48%">
-            <VStack space={2} my={4}>
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                display="flex"
-                flexDir="row"
-                shadow="6"
-                p={2}
-                backgroundColor={color.white}
-              >
-                <Skeleton w={84} h={81} rounded="lg" mr={4} />
-                <VStack width="60%" justifyContent="space-between">
-                  <Skeleton.Text
-                    lines={1}
-                    startColor={color.secondaryTextColor}
-                  />
-                  <Skeleton.Text lines={2} />
-                </VStack>
-              </Box>
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                display="flex"
-                flexDir="row"
-                shadow="6"
-                p={2}
-                backgroundColor={color.white}
-              >
-                <Skeleton w={84} h={81} rounded="lg" mr={4} />
-                <VStack width="60%" justifyContent="space-between">
-                  <Skeleton.Text
-                    lines={1}
-                    startColor={color.secondaryTextColor}
-                  />
-                  <Skeleton.Text lines={2} />
-                </VStack>
-              </Box>
-            </VStack>
-          </ScrollView>
-        ) : (
+        {candidate.length > 0 ? (
           <ScrollView showsVerticalScrollIndicator={false} h="48%">
             <VStack space={2} my={4}>
               {candidate.map((item) => (
                 <CandidateCards key={item.id} candidate={item} />
               ))}
+            </VStack>
+          </ScrollView>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false} h="48%">
+            <VStack space={2} my={4}>
+              <Box
+                width="100%"
+                rounded="lg"
+                overflow="hidden"
+                display="flex"
+                flexDir="row"
+                shadow="6"
+                p={2}
+                backgroundColor={color.white}
+              >
+                <Skeleton w={84} h={81} rounded="lg" mr={4} />
+                <VStack width="60%" justifyContent="space-between">
+                  <Skeleton.Text
+                    lines={1}
+                    startColor={color.secondaryTextColor}
+                  />
+                  <Skeleton.Text lines={2} />
+                </VStack>
+              </Box>
+              <Box
+                width="100%"
+                rounded="lg"
+                overflow="hidden"
+                display="flex"
+                flexDir="row"
+                shadow="6"
+                p={2}
+                backgroundColor={color.white}
+              >
+                <Skeleton w={84} h={81} rounded="lg" mr={4} />
+                <VStack width="60%" justifyContent="space-between">
+                  <Skeleton.Text
+                    lines={1}
+                    startColor={color.secondaryTextColor}
+                  />
+                  <Skeleton.Text lines={2} />
+                </VStack>
+              </Box>
             </VStack>
           </ScrollView>
         )}

@@ -13,7 +13,7 @@ import color from "../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 
-import { signInWithEmailAndPassword, auth } from "../firebase";
+import { signInWithEmailAndPassword, auth } from "../../firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,9 +33,7 @@ const Login = () => {
     } else {
       setLoading(true);
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // // Signed in
-          // const user = userCredential.user;
+        .then(() => {
           router.replace("/tabs");
         })
         .catch((error) => {

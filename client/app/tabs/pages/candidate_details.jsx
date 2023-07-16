@@ -1,13 +1,13 @@
 import { Box, Text, HStack, Pressable, ScrollView } from "native-base";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
+import { useAuth } from "../../../utils/authProvider";
 
-const CandidateDetails = (props) => {
+const CandidateDetails = () => {
   const router = useRouter();
-  const params = useLocalSearchParams();
-  const { name, party, detail, imageUrl } = params;
+  const { passedObject } = useAuth();
   return (
     <Box>
       <Box backgroundColor={color.white} padding={4}>
@@ -34,7 +34,7 @@ const CandidateDetails = (props) => {
           fontFamily="Poppins-Regular"
           mt={4}
         >
-          {name}
+          {passedObject.name}
         </Text>
         <Text
           color={color.secondaryTextColor}
@@ -42,7 +42,7 @@ const CandidateDetails = (props) => {
           fontFamily="Poppins-Regular"
           mt={2}
         >
-          {party}
+          Party: {passedObject.party}
         </Text>
       </Box>
       <Box p={4}>
@@ -51,7 +51,7 @@ const CandidateDetails = (props) => {
             width="100%"
             height={240}
             style={{ marginRight: 8, borderRadius: 8 }}
-            source={imageUrl}
+            source={passedObject.imageUrl}
             alt="image"
           />
           <Text
@@ -62,7 +62,7 @@ const CandidateDetails = (props) => {
             mt={4}
             mb={96}
           >
-            {detail}
+            {passedObject.detail}
           </Text>
         </ScrollView>
       </Box>

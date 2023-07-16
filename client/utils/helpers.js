@@ -33,4 +33,8 @@ function subtractDays(date, days) {
   return result;
 }
 
-export { save, getValueFor, formatDate, subtractDays };
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export { save, getValueFor, formatDate, subtractDays, numberWithCommas };

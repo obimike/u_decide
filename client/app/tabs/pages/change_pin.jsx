@@ -44,9 +44,7 @@ const ChangePin = () => {
           const docRef = doc(db, "users", currentUser.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            console.log("----docSnap.exists()-----");
             if (docSnap.data().pin === currentPin) {
-              console.log("----docRef.data().pin === currentPin-----");
               await updateDoc(doc(db, "users", currentUser.uid), { pin });
               setSuccessMsg(
                 "Pin change was suceessful,\n Your new pin will be used to confirm your vote"
@@ -218,7 +216,7 @@ const ChangePin = () => {
                   textAlign="center"
                   _text={{ fontFamily: "Poppins-Regular" }}
                   isLoadingText="Changing Vote PIN..."
-                  // isLoading={loading}
+                  isLoading={loading}
                   onPress={handleChange}
                 >
                   <Text

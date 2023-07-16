@@ -1,13 +1,14 @@
 import { Text, VStack, Pressable } from "native-base";
 import React from "react";
 import color from "../../../utils/color";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
+import { useAuth } from "../../../utils/authProvider";
 
 const CandidateCards = ({ candidate }) => {
   const router = useRouter();
-  const params = useLocalSearchParams();
-  const imageUrl = candidate.imageUrl;
+  const { setPassedObject } = useAuth();
+
   return (
     <Pressable
       width="100%"
@@ -19,26 +20,22 @@ const CandidateCards = ({ candidate }) => {
       flexDir="row"
       p={2}
       onPress={() => {
+        setPassedObject({});
+        setPassedObject(candidate);
         router.push({
           pathname: "/tabs/pages/candidate_details",
-          params: {
-            name: candidate.name,
-            party: candidate.party,
-            detail: candidate.detail,
-            imageUrl: candidate.imageUrl,
-          },
         });
-        // router.push("/tabs/pages/candidate_details", { candidate: candidate });
       }}
     >
       <Image
+        contentFit="fill"
         width={84}
         height={81}
         style={{ marginRight: 8, borderRadius: 8 }}
         source={candidate.imageUrl}
         alt="image"
       />
-      <VStack width="80%" justifyContent="space-between">
+      <VStack width="80%" justifyContent="space-around">
         <Text
           fontFamily="Poppins-Regular"
           color={color.textColor}

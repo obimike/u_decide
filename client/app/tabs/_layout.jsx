@@ -1,6 +1,6 @@
 import { NativeBaseProvider } from "native-base";
 import color from "../../utils/color";
-import { Tabs } from "expo-router/tabs";
+import { Tabs, Stack } from "expo-router/tabs";
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 
@@ -88,6 +88,7 @@ export default function AppLayout() {
             name="pages/terms"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -95,6 +96,7 @@ export default function AppLayout() {
             name="pages/profile"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -102,6 +104,7 @@ export default function AppLayout() {
             name="pages/change_pin"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -109,6 +112,7 @@ export default function AppLayout() {
             name="pages/news_details"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -116,6 +120,7 @@ export default function AppLayout() {
             name="pages/candidate_details"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -123,6 +128,7 @@ export default function AppLayout() {
             name="pages/change_password"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -137,6 +143,7 @@ export default function AppLayout() {
             name="pages/vote_category"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -144,6 +151,7 @@ export default function AppLayout() {
             name="pages/confirm_vote"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen
@@ -151,6 +159,7 @@ export default function AppLayout() {
             name="pages/live_results"
             options={{
               href: null,
+              tabBarStyle: { display: "none" },
             }}
           />
           <Tabs.Screen

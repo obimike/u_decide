@@ -13,6 +13,7 @@ import {
   setDoc,
   getDoc,
   updateDoc,
+  orderBy,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -66,4 +67,5 @@ export {
   getDownloadURL,
   uploadBytes,
   updatePassword,
+  orderBy,
 };

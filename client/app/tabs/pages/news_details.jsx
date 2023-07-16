@@ -1,22 +1,13 @@
-import {
-  Box,
-  Text,
-  Button,
-  HStack,
-  Center,
-  Pressable,
-  KeyboardAvoidingView,
-  Input,
-  ScrollView,
-  VStack,
-  Image,
-} from "native-base";
-import { useState, useEffect } from "react";
+import { Box, Text, HStack, Pressable, ScrollView } from "native-base";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useAuth } from "../../../utils/authProvider";
+import { format } from "date-fns";
+import { Image } from "expo-image";
 
 const NewsDetails = () => {
+  const { newsObject } = useAuth();
   const router = useRouter();
   return (
     <Box>
@@ -44,8 +35,7 @@ const NewsDetails = () => {
           fontFamily="Poppins-Regular"
           mt={4}
         >
-          The office of the presidency has charged INEC to ensure free and fair
-          electios.
+          {newsObject.title}
         </Text>
         <Text
           color={color.secondaryTextColor}
@@ -53,19 +43,16 @@ const NewsDetails = () => {
           fontFamily="Poppins-Regular"
           mt={4}
         >
-          2nd February, 2023
+          {format(new Date(newsObject.date), "do, MMMM yyyy")}
         </Text>
       </Box>
       <Box p={4}>
         <ScrollView showsVerticalScrollIndicator={false} w="full">
           <Image
-            w="100%"
-            h={240}
-            rounded="lg"
-            mr={4}
-            source={{
-              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-            }}
+            width="100%"
+            height={240}
+            style={{ marginRight: 8, borderRadius: 8 }}
+            source={newsObject.imageUrl}
             alt="image"
           />
           <Text
@@ -76,28 +63,7 @@ const NewsDetails = () => {
             mt={4}
             mb={96}
           >
-            A writer often needs references for his papers. Sometimes he quotes
-            or takes several sentences from the reference source. In this case,
-            the rewriter or paraphrasing tool can be used as an alternative
-            method to make the quoted text not detect as plagiarism. The
-            plagiarism issue is a complicated situation during the process of
-            writing a paper or article. Hence, many ways can be implemented to
-            avoid plagiarism, for example, using a paraphrasing tool or an
-            article rewriter tool. For the best and maximal rewrite quality
-            results, you better read again and make a few corrections if needed
-            on the bestrewriter.com paraphrasing results. But definitely, your
-            spending time and thought on re-reading. A writer often needs
-            references for his papers. Sometimes he quotes or takes several
-            sentences from the reference source. In this case, the rewriter or
-            paraphrasing tool can be used as an alternative method to make the
-            quoted text not detect as plagiarism. The plagiarism issue is a
-            complicated situation during the process of writing a paper or
-            article. Hence, many ways can be implemented to avoid plagiarism,
-            for example, using a paraphrasing tool or an article rewriter tool.
-            For the best and maximal rewrite quality results, you better read
-            again and make a few corrections if needed on the bestrewriter.com
-            paraphrasing results. But definitely, your spending time and thought
-            on re-reading.
+            {newsObject.detail}
           </Text>
         </ScrollView>
       </Box>

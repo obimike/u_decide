@@ -23,6 +23,10 @@ export function UserProvider(props) {
   const [_date, set_date] = useState(-1);
 
   const [loading, setLoading] = useState(true);
+  const [passedObject, setPassedObject] = useState({});
+  const [newsObject, setNewsObject] = useState({});
+  const [voteObject, setVoteObject] = useState({});
+  const [updateUser, setUpdateUser] = useState(false);
 
   const candidateMounted = useRef(true);
   const newsMounted = useRef(true);
@@ -32,6 +36,7 @@ export function UserProvider(props) {
       if (user) {
         setCurrentUser(user);
         getUserDetials(user.uid);
+        console.log("User Loaded");
         setLoading(false);
       } else {
         setCurrentUser(null);
@@ -39,7 +44,7 @@ export function UserProvider(props) {
       }
     });
     return unsubscribe;
-  }, []);
+  }, [updateUser]);
 
   useEffect(() => {
     const getCandidates = async () => {
@@ -79,7 +84,7 @@ export function UserProvider(props) {
     };
     getNews();
     // return newsMounted.current;
-  }, [props]);
+  }, []);
 
   useEffect(() => {
     const getDate = async () => {
@@ -125,6 +130,14 @@ export function UserProvider(props) {
     _date,
     setUser,
     User,
+    passedObject,
+    setPassedObject,
+    newsObject,
+    setNewsObject,
+    voteObject,
+    setVoteObject,
+    updateUser,
+    setUpdateUser,
   };
 
   return (
