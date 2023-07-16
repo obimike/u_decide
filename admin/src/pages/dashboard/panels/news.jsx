@@ -40,9 +40,7 @@ function News() {
       setNews(fetchNewsItems);
     };
 
-    return () => {
-      getNews();
-    };
+    getNews();
   }, [update, loading]);
 
   const deleteNews = async (id) => {

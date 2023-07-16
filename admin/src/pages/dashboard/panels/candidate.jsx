@@ -58,9 +58,7 @@ function Candidate() {
       setCandidate(fetchCandidate);
     };
 
-    return () => {
-      getNews();
-    };
+    getNews();
   }, [update, loading]);
 
   const deleteCandidate = async (id) => {

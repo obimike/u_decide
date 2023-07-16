@@ -65,9 +65,7 @@ function Dashboard() {
       }
     };
 
-    return () => {
-      getDate();
-    };
+    getDate();
   }, []);
 
   useEffect(() => {
