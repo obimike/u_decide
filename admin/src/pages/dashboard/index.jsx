@@ -16,6 +16,7 @@ import {
   PopoverBody,
   Button,
   VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { colors } from "../../utils/colors";
 
@@ -27,11 +28,17 @@ import Candidate from "./panels/candidate";
 import { onAuthStateChanged, auth } from "../../firebase";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { db, getDoc, doc } from "../../firebase";
+import { db, getDoc, doc, query, collection, getDocs } from "../../firebase";
 
 function Dashboard() {
   const [currentUser, setCurrentUser] = useState();
   const [electionDate, setElectionDate] = useState("2023-06-22");
+  const [userCount, setUserCount] = useState(0);
+  const [totalVotes, setTotalVotes] = useState(0);
+  const [presidentVotes, setPresidentVotes] = useState(0);
+  const [governorshipVotes, setGovernorshipVotes] = useState(0);
+  const [senatorVotes, setSenatorVotes] = useState(0);
+  const [HOAVotes, setHOAVotes] = useState(0);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -62,6 +69,61 @@ function Dashboard() {
       getDate();
     };
   }, []);
+
+  useEffect(() => {
+    const getResult = async () => {
+      const q = query(
+        collection(db, "candidates")
+        // orderBy("vote", "desc")
+      );
+      const querySnapshot = await getDocs(q);
+      let countPresident = 0;
+      let countGovernorship = 0;
+      let countSenatorial = 0;
+      let countHOA = 0;
+      let count = 0;
+      querySnapshot.forEach((doc) => {
+        count = count + doc.data().vote;
+
+        if (doc.data().category === "Presidential Election") {
+          countPresident = countPresident + doc.data().vote;
+        } else if (doc.data().category === "Governorship Election") {
+          countGovernorship = countGovernorship + doc.data().vote;
+        } else if (doc.data().category === "Senatorial Election") {
+          countSenatorial = countSenatorial + doc.data().vote;
+        } else if (doc.data().category === "House of Assembly Election") {
+          countHOA = countHOA + doc.data().vote;
+        }
+      });
+
+      console.log("votes: " + count);
+      setTotalVotes(count);
+      setPresidentVotes(countPresident);
+      setGovernorshipVotes(countGovernorship);
+      setSenatorVotes(countSenatorial);
+      setHOAVotes(countHOA);
+    };
+    getResult();
+  }, []);
+
+  useEffect(() => {
+    const getUserCount = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+      let count = 0;
+      querySnapshot.forEach((doc) => {
+        if (doc.data()) {
+          count = count + 1;
+        }
+      });
+      setUserCount(count);
+    };
+    getUserCount();
+  }, []);
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   return (
     <Box>
@@ -136,7 +198,7 @@ function Dashboard() {
             textColor={colors.grayText}
             bgColor={colors.primary}
             title="Total Registered Voters"
-            number="50,502,029"
+            number={numberWithCommas(userCount)}
           >
             <FiUsers fontSize={24} color={colors.gray} />
           </Stat>
@@ -145,8 +207,8 @@ function Dashboard() {
             color={colors.gray}
             textColor={colors.grayText}
             bgColor={colors.primary}
-            title="Total Vote Cast"
-            number="20,052,944"
+            title="Total Votes Casted"
+            number={numberWithCommas(totalVotes)}
           >
             <FiCheckSquare fontSize={24} color={colors.gray} />
           </Stat>
@@ -162,6 +224,71 @@ function Dashboard() {
             <FiCalendar fontSize={24} color={colors.gray} />
           </Stat>
         </Box>
+
+        <Center>
+          <HStack mt="24px" spacing={4}>
+            <VStack
+              borderColor={colors.primary}
+              borderWidth={1}
+              rounded={8}
+              spacing={0}
+              p={2}
+              backgroundColor="#fff"
+            >
+              <Text fontSize="16px" display="flex" color={colors.grayText}>
+                Presidential Election
+              </Text>
+              <Text fontSize="24px" display="flex" color={colors.grayText}>
+                Votes: {numberWithCommas(presidentVotes)}
+              </Text>
+            </VStack>
+            <VStack
+              borderColor={colors.primary}
+              borderWidth={1}
+              rounded={8}
+              spacing={0}
+              p={2}
+              backgroundColor="#fff"
+            >
+              <Text fontSize="16px" display="flex" color={colors.grayText}>
+                Governorship Election
+              </Text>
+              <Text fontSize="24px" display="flex" color={colors.grayText}>
+                Votes: {numberWithCommas(governorshipVotes)}
+              </Text>
+            </VStack>
+            <VStack
+              borderColor={colors.primary}
+              borderWidth={1}
+              rounded={8}
+              spacing={0}
+              p={2}
+              backgroundColor="#fff"
+            >
+              <Text fontSize="16px" display="flex" color={colors.grayText}>
+                Senatorial Election
+              </Text>
+              <Text fontSize="24px" display="flex" color={colors.grayText}>
+                Votes: {numberWithCommas(senatorVotes)}
+              </Text>
+            </VStack>
+            <VStack
+              borderColor={colors.primary}
+              borderWidth={1}
+              rounded={8}
+              spacing={0}
+              p={2}
+              backgroundColor="#fff"
+            >
+              <Text fontSize="16px" display="flex" color={colors.grayText}>
+                House of Assembly Election
+              </Text>
+              <Text fontSize="24px" display="flex" color={colors.grayText}>
+                Votes: {numberWithCommas(HOAVotes)}
+              </Text>
+            </VStack>
+          </HStack>
+        </Center>
         <Text
           fontSize="24px"
           display="flex"

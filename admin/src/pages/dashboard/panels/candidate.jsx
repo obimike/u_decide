@@ -96,6 +96,7 @@ function Candidate() {
           runningMate,
           state,
           lga,
+          vote: 0,
         });
         setSuccessMsg("Electorial candidate added successfully.");
         setName("");
