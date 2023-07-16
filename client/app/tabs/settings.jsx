@@ -20,7 +20,7 @@ const Settings = () => {
   const { currentUser, User } = useAuth();
   return (
     <Box>
-      <HStack backgroundColor={color.white} padding={4}>
+      <HStack backgroundColor={color.white} padding={4} pt={8}>
         <Image
           width={48}
           height={48}

@@ -17,6 +17,7 @@ const Vote = () => {
       <HStack
         backgroundColor={color.white}
         padding={4}
+        pt={8}
         justifyContent="space-between"
       >
         <Text

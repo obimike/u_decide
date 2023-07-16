@@ -24,7 +24,7 @@ import {
 } from "../../../firebase";
 import { numberWithCommas } from "../../../utils/helpers";
 
-const LiveResults = (props) => {
+const LiveResults = () => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(0);
   const [category, setCategory] = useState("Presidential Election");
@@ -114,6 +114,8 @@ const LiveResults = (props) => {
               size="sm"
               colorScheme="tertiary"
               key={i}
+              px={1}
+              py={2}
               name={buttonLabel}
               variant={i === selected ? "solid" : "outline"}
               onPress={() => {

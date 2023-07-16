@@ -16,6 +16,7 @@ const Home = () => {
           fontSize={24}
           padding={4}
           fontFamily="Poppins-Regular"
+          pt={8}
         >
           Hello, {currentUser?.displayName}
         </Text>

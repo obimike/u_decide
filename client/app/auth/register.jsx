@@ -112,6 +112,7 @@ const Register = () => {
               lga,
               pin: "",
               imageUrl: "",
+              role: "user",
               voted: {
                 "Presidential Election": false,
                 "Governorship Election": false,

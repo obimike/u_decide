@@ -8,11 +8,14 @@
     "slug": "U-Decide",
     "extra": {
       "eas": {
-        "projectId": "74bb922f-fd3c-495d-81e8-6a688438fd90"
+        "projectId": "412e7498-c93a-4fa9-9329-e3bcad3b1819"
       }
     },
     "android": {
       "package": "com.udecide.client"
+    },
+    "ios": {
+      "bundleIdentifier": "com.udecide.client"
     }
   }
 }

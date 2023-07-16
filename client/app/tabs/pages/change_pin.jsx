@@ -49,6 +49,9 @@ const ChangePin = () => {
               setSuccessMsg(
                 "Pin change was suceessful,\n Your new pin will be used to confirm your vote"
               );
+              setConfirmPin("");
+              setCurrentPin("");
+              setPin("");
               setLoading(false);
             } else {
               setErrorMsg("Your current PIN is wrong!");

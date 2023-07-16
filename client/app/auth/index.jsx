@@ -68,7 +68,7 @@ const Login = () => {
   };
 
   return (
-    <Box padding={4}>
+    <Box padding={4} mt={2}>
       <Text
         fontFamily="Poppins-Regular"
         color={color.primary}
