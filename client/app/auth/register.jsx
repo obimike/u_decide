@@ -113,6 +113,7 @@ const Register = () => {
               pin: "",
               imageUrl: "",
               role: "user",
+              isApproved: false,
               voted: {
                 "Presidential Election": false,
                 "Governorship Election": false,
