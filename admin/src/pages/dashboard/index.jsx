@@ -29,6 +29,7 @@ import { onAuthStateChanged, auth } from "../../firebase";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, getDoc, doc, query, collection, getDocs } from "../../firebase";
+import Accreditation from "./panels/accreditation";
 
 function Dashboard() {
   const [currentUser, setCurrentUser] = useState();
@@ -40,6 +41,8 @@ function Dashboard() {
   const [senatorVotes, setSenatorVotes] = useState(0);
   const [HOAVotes, setHOAVotes] = useState(0);
   let navigate = useNavigate();
+
+  console.log("Dashboard - refreshed--------");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -58,7 +61,7 @@ function Dashboard() {
       const docRef = doc(db, "elections", "date");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        // console.log("Document data:", docSnap.data());
         setElectionDate(docSnap.data().date.toString());
       } else {
         console.log("No such document!");
@@ -66,7 +69,7 @@ function Dashboard() {
     };
 
     getDate();
-  }, []);
+  }, [electionDate]);
 
   useEffect(() => {
     const getResult = async () => {
@@ -94,7 +97,7 @@ function Dashboard() {
         }
       });
 
-      console.log("votes: " + count);
+      // console.log("votes: " + count);
       setTotalVotes(count);
       setPresidentVotes(countPresident);
       setGovernorshipVotes(countGovernorship);
@@ -102,7 +105,7 @@ function Dashboard() {
       setHOAVotes(countHOA);
     };
     getResult();
-  }, []);
+  }, [totalVotes]);
 
   useEffect(() => {
     const getUserCount = async () => {
@@ -117,7 +120,7 @@ function Dashboard() {
       setUserCount(count);
     };
     getUserCount();
-  }, []);
+  }, [userCount]);
 
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -303,6 +306,7 @@ function Dashboard() {
               <Tab borderRadius={8}>News/Updates</Tab>
               <Tab borderRadius={8}>Electoral Candidates</Tab>
               <Tab borderRadius={8}>Elections Date</Tab>
+              <Tab borderRadius={8}>Voters Accreditation</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
@@ -313,6 +317,9 @@ function Dashboard() {
               </TabPanel>
               <TabPanel>
                 <ElectionDate value={setElectionDate} />
+              </TabPanel>
+              <TabPanel>
+                <Accreditation />
               </TabPanel>
             </TabPanels>
           </Tabs>
