@@ -1,4 +1,4 @@
-import { Box, Text, HStack, Pressable, ScrollView } from "native-base";
+import { Box, Text, HStack, Pressable, ScrollView, Center } from "native-base";
 import color from "../../../utils/color";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -29,6 +29,16 @@ const NewsDetails = () => {
             </Text>
           </HStack>
         </Pressable>
+        <Center>
+          <Text
+            color={color.textColor}
+            fontSize={24}
+            fontFamily="Poppins-Regular"
+            my={4}
+          >
+            News/Update
+          </Text>
+        </Center>
         <Text
           color={color.textColor}
           fontSize={20}

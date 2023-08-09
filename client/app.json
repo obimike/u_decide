@@ -6,6 +6,7 @@
     },
     "name": "U-Decide",
     "slug": "U-Decide",
+    "icon": "./assets/images/ic_launcher.png",
     "extra": {
       "eas": {
         "projectId": "412e7498-c93a-4fa9-9329-e3bcad3b1819"
