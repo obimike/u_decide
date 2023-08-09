@@ -18,6 +18,7 @@ import { colors } from "../utils/colors";
 function VotersCard({ voters, onClick }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+  // console.log(voters);
 
   return (
     <>
@@ -39,7 +40,7 @@ function VotersCard({ voters, onClick }) {
         <Flex direction="column" ml="12px" w="100%">
           <Flex mt="8px" alignItems="center" justifyContent="space-between">
             <Text fontSize="20px" color={colors.grayText} noOfLines={2}>
-              {voters.name}
+              {voters.lastName} {voters.firstName}
             </Text>
             <Button bgColor={colors.primary} size="sm" onClick={onOpen}>
               <Text fontSize="14px" color={colors.gray}>
@@ -48,7 +49,7 @@ function VotersCard({ voters, onClick }) {
             </Button>
           </Flex>
           <Text fontSize="16px" color={colors.grayText} fontWeight="bold">
-            {voters.nin}
+            NIN: {voters.nin}
           </Text>
           <Text fontSize="16px" color={colors.primary}>
             {voters.state && `${voters.state} (State)`}

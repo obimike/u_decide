@@ -26,11 +26,11 @@ function AccreditedCard({ voters }) {
           justifyContent="space-between"
         >
           <Text fontSize="20px" color={colors.grayText} noOfLines={2}>
-            {voters.name}
+            {voters.lastName} {voters.firstName}
           </Text>
 
           <Text fontSize="16px" color={colors.grayText} fontWeight="bold">
-            {voters.nin}
+            NIN: {voters.nin}
           </Text>
           <Text fontSize="16px" color={colors.primary}>
             {voters.state && `${voters.state} (State)`}

@@ -6,27 +6,28 @@ import {
   collection,
   db,
   getDocs,
-  deleteDoc,
   doc,
   query,
+  updateDoc,
 } from "../../../firebase";
-import AccreditedCard from "../../../components/voters";
+import AccreditedCard from "../../../components/accredited_card";
 
-const item = {
-  name: "Joe Randal",
-  state: "Lagos",
-  imageUrl:
-    "https://nation-media-assets.storage.googleapis.com/wp-content/uploads/2023/07/15080826/Afolabi.jpg",
-  nin: "10345687890",
-  lga: "Kosofe",
-};
+// const item = {
+//   id: "J576879f479dg9380e293",
+//   name: "Joe Randal",
+//   state: "Lagos",
+//   imageUrl:
+//     "https://nation-media-assets.storage.googleapis.com/wp-content/uploads/2023/07/15080826/Afolabi.jpg",
+//   nin: "10345687890",
+//   lga: "Kosofe",
+// };
 
 const Accreditation = () => {
   const [unaccreditedVoters, setUnaccreditedVoters] = useState([]);
   const [accreditedVoters, setAccreditedVoters] = useState([]);
 
   useEffect(() => {
-    const getUserCount = async () => {
+    const getVoters = async () => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
       const fetchUnaccreditedVoters = [];
@@ -48,11 +49,19 @@ const Accreditation = () => {
       });
       setUnaccreditedVoters(fetchUnaccreditedVoters);
       setAccreditedVoters(fetchAccreditedVoters);
+      console.log(fetchAccreditedVoters);
     };
-    getUserCount();
-  }, [accreditedVoters]);
+    console.log(accreditedVoters);
+    getVoters();
+  }, []);
 
-  const accreditate = async (id) => {};
+  const accreditate = async (id) => {
+    console.log(id);
+    console.log(unaccreditedVoters);
+    await updateDoc(doc(db, "users", id), {
+      isApproved: true,
+    }).catch((e) => console.log(e));
+  };
 
   return (
     <Box display="flex" w="100%" h={24} margin="auto 0" flexDirection="column">
@@ -73,7 +82,7 @@ const Accreditation = () => {
           >
             Unaccredited Voters ({unaccreditedVoters.length})
           </Text>
-          {accreditedVoters.length === 0 && (
+          {unaccreditedVoters.length === 0 && (
             <Center>
               <Text
                 fontSize="18px"
@@ -81,13 +90,14 @@ const Accreditation = () => {
                 fontWeight="bold"
                 mt={24}
               >
-                No Unaccredited Voter.
+                No Unaccredited Voters.
               </Text>
             </Center>
           )}
-          {accreditedVoters.map((item) => (
+          {unaccreditedVoters.map((item) => (
             <VotersCard key={item.id} voters={item} onClick={accreditate} />
           ))}
+          {/* <VotersCard voters={item} onClick={accreditate} /> */}
         </Box>
         <Box w="45%" height="50vh" overflow="scroll" pb={4}>
           <Text
@@ -107,7 +117,7 @@ const Accreditation = () => {
                 fontWeight="bold"
                 mt={24}
               >
-                No Accredited Voter.
+                No Accredited Voters.
               </Text>
             </Center>
           )}
