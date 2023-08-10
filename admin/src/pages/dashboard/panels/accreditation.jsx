@@ -12,19 +12,10 @@ import {
 } from "../../../firebase";
 import AccreditedCard from "../../../components/accredited_card";
 
-// const item = {
-//   id: "J576879f479dg9380e293",
-//   name: "Joe Randal",
-//   state: "Lagos",
-//   imageUrl:
-//     "https://nation-media-assets.storage.googleapis.com/wp-content/uploads/2023/07/15080826/Afolabi.jpg",
-//   nin: "10345687890",
-//   lga: "Kosofe",
-// };
-
 const Accreditation = () => {
   const [unaccreditedVoters, setUnaccreditedVoters] = useState([]);
   const [accreditedVoters, setAccreditedVoters] = useState([]);
+  const [updateVoters, setUpdateVoters] = useState(false);
 
   useEffect(() => {
     const getVoters = async () => {
@@ -49,13 +40,11 @@ const Accreditation = () => {
       });
       setUnaccreditedVoters(fetchUnaccreditedVoters);
       setAccreditedVoters(fetchAccreditedVoters);
-      console.log(fetchUnaccreditedVoters);
-
-      console.log("fetchAccreditedVoters");
+     
+      console.count("fetchAccreditedVoters");
     };
-    console.log(accreditedVoters);
     getVoters();
-  }, []);
+  }, [updateVoters]);
 
   const accreditate = async (id) => {
     console.log(id);
@@ -63,6 +52,16 @@ const Accreditation = () => {
     await updateDoc(doc(db, "users", id), {
       isApproved: true,
     }).catch((e) => console.log(e));
+    setUpdateVoters(!updateVoters)
+  };
+
+  const unaccreditate = async (id) => {
+    console.log(id);
+    console.log(unaccreditedVoters);
+    await updateDoc(doc(db, "users", id), {
+      isApproved: false,
+    }).catch((e) => console.log(e));
+    setUpdateVoters(!updateVoters)
   };
 
   return (
@@ -124,7 +123,7 @@ const Accreditation = () => {
             </Center>
           )}
           {accreditedVoters.map((item) => (
-            <AccreditedCard key={item.id} voters={item} />
+            <AccreditedCard key={item.id} voters={item} onClick={unaccreditate} />
           ))}
         </Box>
       </Box>

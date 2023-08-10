@@ -1,7 +1,15 @@
-import { Text, Image, Flex } from "@chakra-ui/react";
+import { Text, Image, Flex, Button, AlertDialog , useDisclosure, 
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,} from "@chakra-ui/react";
 import { colors } from "../utils/colors";
+import { useRef } from "react";
 
-function AccreditedCard({ voters }) {
+function AccreditedCard({ voters, onClick }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
   return (
     <>
       <Flex
@@ -19,16 +27,17 @@ function AccreditedCard({ voters }) {
           height={81}
           borderRadius={8}
         />
-        <Flex
-          direction="column"
-          ml="12px"
-          w="100%"
-          justifyContent="space-between"
-        >
-          <Text fontSize="20px" color={colors.grayText} noOfLines={2}>
-            {voters.lastName} {voters.firstName}
-          </Text>
-
+         <Flex direction="column" ml="12px" w="100%">
+          <Flex mt="8px" alignItems="center" justifyContent="space-between">
+            <Text fontSize="20px" color={colors.grayText} noOfLines={2}>
+              {voters.lastName} {voters.firstName}
+            </Text>
+            <Button bgColor={colors.error} size="sm" onClick={onOpen}>
+              <Text fontSize="14px" color={colors.gray}>
+                Unaccreditate
+              </Text>
+            </Button>
+          </Flex>
           <Text fontSize="16px" color={colors.grayText} fontWeight="bold">
             NIN: {voters.nin}
           </Text>
@@ -39,6 +48,40 @@ function AccreditedCard({ voters }) {
           </Text>
         </Flex>
       </Flex>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Unaccreditate this voters
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? 
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  onClick(voters.id);
+                  onClose();
+                }}
+                ml={3}
+              >
+                Unaccreditate
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }

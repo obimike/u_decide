@@ -36,13 +36,11 @@ function News() {
         fetchNewsItems.push(fetchItem);
         // console.log(doc);
       });
-      setUpdate(!update);
       setNews(fetchNewsItems);
-      console.log("getNews");
     };
 
     getNews();
-  }, [loading]);
+  }, [loading, update]);
 
   const deleteNews = async (id) => {
     console.log(id);

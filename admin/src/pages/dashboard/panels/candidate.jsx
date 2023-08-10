@@ -41,7 +41,7 @@ function Candidate() {
   const [mate, setMate] = useState(true);
   const [_state, set_State] = useState(true);
   const [_lga, set_Lga] = useState(true);
-  const [update, setUpdate] = useState(false);
+  const [updateCandidate, setUpdateCandidate] = useState(0);
 
   useEffect(() => {
     const getCandidate = async () => {
@@ -54,16 +54,15 @@ function Candidate() {
         };
         fetchCandidate.push(fetchItem);
       });
-      setUpdate(!update);
       setCandidate(fetchCandidate);
     };
-    console.log("getCandidate");
+
     getCandidate();
-  }, [loading]);
+  }, [loading, updateCandidate]);
 
   const deleteCandidate = async (id) => {
     await deleteDoc(doc(db, "candidates", id));
-    setUpdate(!update);
+    setUpdateCandidate(!updateCandidate);
   };
 
   const addCandidate = async (event) => {

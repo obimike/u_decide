@@ -70,7 +70,7 @@ function VotersCard({ voters, onClick }) {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
+              Are you sure?
             </AlertDialogBody>
 
             <AlertDialogFooter>
