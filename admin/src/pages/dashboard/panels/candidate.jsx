@@ -44,7 +44,7 @@ function Candidate() {
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
-    const getNews = async () => {
+    const getCandidate = async () => {
       const querySnapshot = await getDocs(collection(db, "candidates"));
       const fetchCandidate = [];
       querySnapshot.forEach((doc) => {
@@ -57,9 +57,9 @@ function Candidate() {
       setUpdate(!update);
       setCandidate(fetchCandidate);
     };
-
-    getNews();
-  }, [update, loading]);
+    console.log("getCandidate");
+    getCandidate();
+  }, [loading]);
 
   const deleteCandidate = async (id) => {
     await deleteDoc(doc(db, "candidates", id));

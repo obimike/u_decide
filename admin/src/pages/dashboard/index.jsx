@@ -42,7 +42,7 @@ function Dashboard() {
   const [HOAVotes, setHOAVotes] = useState(0);
   let navigate = useNavigate();
 
-  console.log("Dashboard - refreshed--------");
+  console.count("Dashboard - refreshed--------");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -53,11 +53,12 @@ function Dashboard() {
         navigate("/");
       }
     });
+    console.count("onAuthStateChanged");
     return unsubscribe;
   }, [navigate]);
 
   useEffect(() => {
-    const getDate = async () => {
+    const getElectionDate = async () => {
       const docRef = doc(db, "elections", "date");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -67,8 +68,8 @@ function Dashboard() {
         console.log("No such document!");
       }
     };
-
-    getDate();
+    console.count("getElectionDate");
+    getElectionDate();
   }, [electionDate]);
 
   useEffect(() => {
@@ -104,6 +105,7 @@ function Dashboard() {
       setSenatorVotes(countSenatorial);
       setHOAVotes(countHOA);
     };
+    console.count("getResult");
     getResult();
   }, [totalVotes]);
 

@@ -38,10 +38,11 @@ function News() {
       });
       setUpdate(!update);
       setNews(fetchNewsItems);
+      console.log("getNews");
     };
 
     getNews();
-  }, [update, loading]);
+  }, [loading]);
 
   const deleteNews = async (id) => {
     console.log(id);

@@ -49,7 +49,9 @@ const Accreditation = () => {
       });
       setUnaccreditedVoters(fetchUnaccreditedVoters);
       setAccreditedVoters(fetchAccreditedVoters);
-      console.log(fetchAccreditedVoters);
+      console.log(fetchUnaccreditedVoters);
+
+      console.log("fetchAccreditedVoters");
     };
     console.log(accreditedVoters);
     getVoters();
